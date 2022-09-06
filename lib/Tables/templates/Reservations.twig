@@ -1,0 +1,26 @@
+{% if given is empty %}
+    <div class="reservations-blocklet">
+        {% if hidden %}
+            <span class="dashicons dashicons-plus new-inventory-icon"></span>
+        {% else %}
+
+            <div>
+                {{ size }}
+            </div>
+            <div>
+                {% if properties.prefix is iterable %}
+                    <select>
+                        {% for prefix in properties.prefix %}
+                            <option>{{ prefix }}</option>
+                        {% endfor %}
+                    </select>
+                {% else %}
+                    {{ properties.prefix }}
+                {% endif %}
+            </div>
+            <div>
+                <input type="number" />
+            </div>
+        {% endif %}
+    </div>
+{% endif %}

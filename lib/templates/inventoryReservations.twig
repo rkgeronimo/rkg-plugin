@@ -1,0 +1,78 @@
+{% block content %}
+    <div class="wrap">
+        <h1 id="add-new-inventory" class="wp-heading-inline">Izdavanje opreme</h1>
+        {#<a href="{{site.url}}/wp/wp-admin/admin.php?page=reservations_new" class="page-title-action">Dodaj novu rezervaciju</a>#}
+    </div>
+{{ table.display }}
+        {# <table class="wp-list-table widefat fixed striped users"> #}
+            {# <thead> #}
+                {# <tr> #}
+                    {# <th scope="col" class="manage-column column-name">Korisnik</th> #}
+                    {# <th scope="col" class="manage-column column-name">Izlet</th> #}
+                    {# {% for type in typeTranslation %} #}
+                        {# <th scope="col" id="name" class="manage-column column-name">{{ type }}</th> #}
+                    {# {% endfor %} #}
+                    {# <th scope="col" class="manage-column column-name">Komentar</th> #}
+                    {# <th scope="col" class="manage-column column-name"></th> #}
+            {# </thead> #}
+
+            {# <tbody id="the-list" data-wp-lists="list:user"> #}
+
+                {# {% for reservation in reservations %} #}
+                {# <tr> #}
+                    {# <td class="name column-name" data-colname="Ime" rowspan="2">{{ reservation.user.display_name }}</td> #}
+                    {# <td class="name column-name" data-colname="Ime" rowspan="2">{{ reservation.post.post_title }}</td> #}
+                    {# {% for key,type in typeTranslation %} #}
+                        {# <td scope="col" id="name" class="manage-column column-name"> #}
+                        {# {% if attribute(reservation.user, key) is empty and attribute(reservation.user, key~'_size') is not empty %} #}
+                            {# {{ attribute(reservation.user, key~'_size') }} #}
+                        {# {% elseif key == 'lead_belt' %} #}
+                            {# {{ reservation.lead_size }} #}
+                        {# {% endif %} #}
+                        {# {{ attribute(reservation, key) ? '('~attribute(reservation, key)~')' }} #}
+                        {# </td> #}
+                    {# {% endfor %} #}
+                            {# <td scope="col" id="name" class="manage-column column-name"> #}
+                                {# {% if reservation.other is not empty %} #}
+                                {# <span class="dashicons dashicons-admin-comments rkg-popover-control"></span> #}
+                                {# <div class="rkg-popover">{{ reservation.other }}</div> #}
+                                {# {% endif %} #}
+                            {# </td> #}
+                    {# <td class="name column-name" data-colname="Ime"> #}
+                            {# <input type="submit" name="createuser" id="createusersub" class="button button-secondary" value="Vrati sve"> #}
+                    {# </td> #}
+                {# </tr> #}
+                {# <form method="post" action="admin.php?page=reservations"> #}
+                    {# <input type="hidden" name="reservation" value="{{ reservation.id }}" /> #}
+                    {# <tr class="reservation-resolve"> #}
+                        {# {% for key,type in typeTranslation %} #}
+                            {# <td scope="col" id="name" class="manage-column column-name"> #}
+                                {# {% if attribute(reservation.user, key) is empty or attribute(reservation, key) is not empty %} #}
+                                    {# <input class="iid" name="{{ key }}" type="text" placeholder="Šifra" style="width: 70%" value="{{ attribute(reservation, key) }}"/> #}
+                                {# {% else %} #}
+                                    {# <span class="dashicons dashicons-plus new-inventory-icon"></span> #}
+                                    {# <input class="new-inventory iid" name="{{ key }}" type="text" placeholder="Šifra" style="width: 70%"/> #}
+                                {# {% endif %} #}
+                                {# {% if attribute(reservation, key) is not empty %} #}
+                                    {# <select name="action"  name="{{ key }}_returned" id="bulk-action-selector-top"> #}
+                                        {# <option value="1">Izdano</option> #}
+                                        {# <option value="0">Vraćeno</option> #}
+                                        {# <option value="3">Izgubljeno</option> #}
+                                    {# </select> #}
+                                {# {% endif %} #}
+                            {# </td> #}
+                        {# {% endfor %} #}
+                            {# <td scope="col" id="name" class="manage-column column-name"> #}
+                                {# <span class="dashicons dashicons-admin-comments rkg-popover-control"></span> #}
+                                {# <div class="rkg-popover"><textarea name="other"></textarea></div> #}
+                            {# </td> #}
+                        {# <td class="name column-name" data-colname="Ime"> #}
+                            {# <input type="submit" name="createuser" id="createusersub" class="button button-primary" value="Spremi"> #}
+                        {# </td> #}
+                    {# </tr> #}
+                {# </form> #}
+                {# {% endfor %} #}
+            {# </tbody> #}
+
+        {# </table> #}
+{% endblock %}

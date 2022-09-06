@@ -1,0 +1,10 @@
+{% block content %}
+    {# {{ dump(table) }} #}
+    <div class="wrap">
+        <div></div>
+        <h1 id="add-new-inventory" class="wp-heading-inline">{{ post.post_title }}</h1>
+        <h2>{{ excursionMeta.starttime|date("d.m.Y.") }} - {{ excursionMeta.endtime|date("d.m.Y.") }}</h2>
+        {# {{ table.display_tablenav  }} #}
+        {{ table.display }}
+    </div>
+{% endblock %}
