@@ -32,14 +32,14 @@ class RkgPost implements InitInterface
     public function createRkgPostPosttype()
     {
         $labels = array(
-            'name'          => __('Objave'),
-            'singular_name' => __('Objava'),
+            'name'          => __('Novosti'),
+            'singular_name' => __('Novost'),
             'add_new'       => __('Dodaj novu'),
             'add_new_item'  => __('Dodaj novu'),
-            'edit_item'     => __('Uredi objavu'),
-            'new_item'      => __('Dodaj novu objavu'),
-            'view_item'     => __('Pregledaj objavu'),
-            'search_items'  => __('Pretraži objave'),
+            'edit_item'     => __('Uredi vijest'),
+            'new_item'      => __('Dodaj novu vijesti'),
+            'view_item'     => __('Pregledaj vijest'),
+            'search_items'  => __('Pretraži vijesti'),
         );
         register_post_type(
             'rkg-post',

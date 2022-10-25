@@ -791,11 +791,11 @@ class Courses implements InitInterface
         );
 
         $tableName = $this->wpdb->prefix."rkg_course_interest";
-        $context['interested'] = $this->wpdb->get_col(
+        $context['interested'] = $currentUser->ID ? $this->wpdb->get_col(
             "SELECT course_template_id FROM "
             .$tableName.
             " WHERE user_id = ".$currentUser->ID
-        );
+        ) : [];
 
         $tableName          = $this->wpdb->prefix."rkg_course_meta";
         $firstJoin          = $this->wpdb->prefix."rkg_course_template";

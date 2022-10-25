@@ -524,13 +524,25 @@ class Users implements InitInterface
      */
     public function guestInvite()
     {
+        global $wpdb;
 
+        $excursionTableName = $wpdb->prefix."rkg_excursion_meta";
+        $excursionStatus = $wpdb->get_row("SELECT  guests_limit, limitation, registered FROM "
+                .$excursionTableName
+                ." WHERE id="
+                .$_POST['post']);
+        
+        // If limit applies to guests, check availability
+        if (!empty($excursionStatus->guests_limit) && $excursionStatus->registered+1 > $excursionStatus->limitation) {
+            echo json_encode(array('update' => true, 'message' => __('Izlet je popunjen.')));
+            wp_die();
+        }
+                
         $currentUser = wp_get_current_user();
         $this->userMetaUpdate($currentUser->ID, true);
 
-        global $wpdb;
         $tableName = $wpdb->prefix."rkg_excursion_guest";
-        $wpdb->replace(
+        $result = $wpdb->replace(
             $tableName,
             array(
                 'user_id' => $currentUser->ID,
@@ -541,7 +553,16 @@ class Users implements InitInterface
             )
         );
 
-        echo json_encode(array('update' => true, 'message' => __('Spremljeno')));
+        // If guests count in limit, update registered number (increase)
+        if (!empty($excursionStatus->guests_limit)) {
+            $wpdb->query("UPDATE $excursionTableName SET registered = registered + 1 WHERE id = {$_POST['post']};");
+        }
+
+        if (!empty($result)) {
+            echo json_encode(array('update' => true, 'message' => __('Spremljeno')));
+        } else {
+            echo json_encode(array('update' => true, 'message' => __('Dogodila se pogreška')));
+        }
 
         wp_die();
     }
@@ -559,7 +580,7 @@ class Users implements InitInterface
 
         global $wpdb;
         $tableName = $wpdb->prefix."rkg_excursion_guest";
-        $wpdb->delete(
+        $result = $wpdb->delete(
             $tableName,
             array(
                 'user_id' => $currentUser->ID,
@@ -568,7 +589,22 @@ class Users implements InitInterface
             )
         );
 
-        echo json_encode(array('update' => true, 'message' => __('Spremljeno')));
+        $excursionTableName = $wpdb->prefix."rkg_excursion_meta";
+        $excursionStatus = $wpdb->get_row("SELECT  guests_limit, registered FROM "
+                .$excursionTableName
+                ." WHERE id="
+                .$_POST['post']);
+
+        // If guests count in limit, update registered number (decrease)
+        if (!empty($excursionStatus->guests_limit)) {
+            $wpdb->query("UPDATE $excursionTableName SET registered = registered - 1 WHERE id = {$_POST['post']};");
+        }
+
+        if (!empty($result)) {
+            echo json_encode(array('update' => true, 'message' => __('Spremljeno')));
+        } else {
+            echo json_encode(array('update' => true, 'message' => __('Dogodila se pogreška')));
+        }
 
         wp_die();
     }

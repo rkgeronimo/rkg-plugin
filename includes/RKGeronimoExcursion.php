@@ -102,7 +102,7 @@ class RKGeronimoExcursion
         if ($post->ID) {
             $tableName       = $this->wpdb->prefix . "rkg_excursion_meta";
             $context['meta'] = $this->wpdb->get_row("SELECT id, leaders, log, ".
-                "price, latitude, longitude, limitation, guests, canceled, starttime, "
+                "price, latitude, longitude, limitation, guests, guests_limit, canceled, starttime, "
                 ."endtime, deadline FROM "
                 .$tableName
                 ." WHERE id="
@@ -184,18 +184,53 @@ class RKGeronimoExcursion
                 $longitude = '15.951589';
             }
 
+            $load_registered = $this->wpdb->get_var(
+                "SELECT registered FROM "
+                .$tableName
+                ." WHERE id = "
+                .$this->post['post_ID']
+            );
+            // Count organizer as registered since added as participant
+            $registered = empty($load_registered) ? 1 : $load_registered;
+
+            // Make sure that registered counter is still ok with guests
+            if (true) {
+                $guestsNumber = $this->wpdb->get_var(
+                    "SELECT COUNT(*) FROM "
+                    .$this->wpdb->prefix."rkg_excursion_guest"
+                    ." WHERE post_id="
+                    .$this->post['post_ID']
+                );
+
+                $participantsNumber = $this->wpdb->get_var(
+                    "SELECT COUNT(*) FROM "
+                    .$this->wpdb->prefix."rkg_excursion_signup"
+                    ." WHERE post_id="
+                    .$this->post['post_ID']
+                );
+
+                if (empty($guests_limit)) {
+                    // Excude guests now from registered
+                    $registered = $participantsNumber;
+                } else {
+                    // Include guests now in registered
+                    $registered = $guestsNumber + $participantsNumber;
+                }
+            }
+
             $sql = $this->wpdb->prepare(
-                "INSERT INTO $tableName (id, leaders, log, limitation, guests, guests_limit, ".
+                "INSERT INTO $tableName (id, leaders, log, limitation, registered, guests, guests_limit, ".
                 "price, latitude, longitude, canceled, starttime, endtime, ".
                 "deadline) ".
-                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) ".
-                "ON DUPLICATE KEY UPDATE leaders = %s, log = %s, limitation = %s, ".
+                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) ".
+                "ON DUPLICATE KEY UPDATE leaders = %s, log = %s, limitation = %s, registered = %s, ".
                 "guests = %s, guests_limit = %s, price = %s, latitude = %s, longitude = %s, ".
                 "canceled = %s, starttime = %s, endtime = %s, deadline = %s",
                 $this->post['post_ID'],
                 $this->post['leaders'],
                 $log,
                 $this->post['limitation'],
+                $registered,
                 $guests,
                 $guests_limit,
                 $this->post['price'],
@@ -208,6 +243,7 @@ class RKGeronimoExcursion
                 $this->post['leaders'],
                 $log,
                 $this->post['limitation'],
+                $registered,
                 $guests,
                 $guests_limit,
                 $this->post['price'],

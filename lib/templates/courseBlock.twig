@@ -70,7 +70,7 @@
         {% endfor %}
         {% for course in coursePlaceholders %}
             <div class="course-block-container">
-                <a id="course-block-placeholder-link-{{course.id}}" href="{{ http_host }}/?page_id=28&id={{course.id}}">
+                <a id="course-block-placeholder-link-{{course.id}}" href="{{ http_host }}/?page_id=23&id={{course.id}}">
                     <div class="course-block-h">{{ course.category }}</div>
                     <div class="course-block-date">
                             <img src="{{ site.theme.link }}/assets/img/logo-blue.png" />
@@ -80,6 +80,7 @@
                 </a>
                 <table class="course-block-t"><tbody>
                         <tr>
+                            {% if user.can('member_access') %}
                             <td>
                                 {% if course.id in interested %}
                                     <a id="course-block-interested-{{course.id}}" class="course-not-interested"
@@ -95,8 +96,9 @@
                                        >ZANIMA ME</a>
                                 {% endif %}
                             </td>
+                            {% endif %}
                             <td>
-                                <a id="course-block-placeholder-link-more-{{course.id}}" href="{{ http_host }}{{ http_host }}/?page_id=28&id={{course.id}}">VIŠE</a>
+                                <a id="course-block-placeholder-link-more-{{course.id}}" href="/?page_id=23&id={{course.id}}">VIŠE</a>
                             </td>
                         </tr>
                     </tbody>

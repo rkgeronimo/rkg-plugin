@@ -23,7 +23,7 @@ class Blocks implements InitInterface
      */
     public function init()
     {
-        add_filter('allowed_block_types', array($this, 'allowedBlockTypes'));
+        add_filter('allowed_block_types_all', array($this, 'allowedBlockTypes'));
     }
 
     /**

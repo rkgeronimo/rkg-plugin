@@ -112,7 +112,7 @@ class RKGeronimo
         );
         wp_enqueue_script(
             'rkg-js',
-            WP_PLUGIN_URL.'/rkgeronimo/js/script.js',
+            WP_PLUGIN_URL.'/rkg-plugin/js/script.js',
             array ('jquery', 'leaflet-tile', 'slick', 'leaflet-gestures'),
             1.1,
             true
