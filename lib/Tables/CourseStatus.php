@@ -86,8 +86,8 @@ class CourseStatus extends WP_List_Table
             'liability'    => 'Izjava o odgovornosti',
             'brevet'       => 'Slika za brevet',
             'newbrevet'    => 'Novi broj breveta',
-            'payed'        => 'Platio',
-            'compleated'   => 'Završio',
+            'payed'        => 'Plaćeno',
+            'compleated'   => 'Završeno',
         );
 
         return $columns;
