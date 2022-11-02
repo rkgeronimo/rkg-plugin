@@ -81,7 +81,7 @@ class RKGeronimo
         );
         wp_enqueue_script(
             'leaflet-tile',
-            'http://maps.stamen.com/js/tile.stamen.js?v1.3.0',
+            'https://stamen-maps.a.ssl.fastly.net/js/tile.stamen.js?v1.3.0',
             array('leaflet-provider'),
             null,
             true
