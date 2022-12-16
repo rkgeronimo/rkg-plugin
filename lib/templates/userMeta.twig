@@ -34,7 +34,6 @@
                     {{ excursions_last }}
                 </td>
             </tr>
-    {% if user.can('create_users') %}
             <tr>
                 <th><label for="rc">Ronilačka kategorija</label></th>
                 <td>
@@ -70,35 +69,6 @@
                 <th><label for="DAN_op">DAN Oxygen provider</label></th>
                 <td><input type="checkbox" name="DAN_op"{{ profileMeta.DAN_op ? ' checked' }}></td>
             </tr>
-    {% else %}
-            <tr>
-                <th><label>Ronilačka kategorija</label></th>
-                <td>
-                    {{ profileMeta.rc }}
-                </td>
-            </tr>
-            <tr>
-                <th><label for="cardNumber">Broj breveta</label></th>
-                <td>{{ profileMeta.cardNumber }}</td>
-            </tr>
-            {% if profileMeta.log is not empty %}
-                <tr>
-                    <th><label>Klupski dnevnik</label></th>
-                    <td>
-                        Da
-                    </td>
-                </tr>
-            {% endif %}
-            <tr>
-                <th><label>Specijalnosti</label></th>
-                <td>
-                    {{ profileMeta.co ? 'Kompresionist, ' }}
-                    {{ profileMeta.nitrox ? 'Nitrox, ' }}
-                    {{ profileMeta.dry_suit ? 'Suho odijelo, ' }}
-                    {{ profileMeta.DAN_op ? 'Dan Oxygen provider, ' }}
-                </td>
-            </tr>
-    {% endif %}
         </table>
     <h3>
         Oprema
