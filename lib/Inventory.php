@@ -146,8 +146,68 @@ class Inventory implements InitInterface
         );
     }
 
+    private function editReservation($reservationId, $typeTranslations, $data) {
+        global $wpdb;
+        $tableName = $wpdb->prefix."rkg_excursion_gear";
+        $tableName2 = $wpdb->prefix."rkg_inventory";
+        $result = $wpdb->get_row(
+            "
+            SELECT *
+            FROM $tableName
+            WHERE id = '{$reservationId}'
+            "
+        );
+
+        // Add other data types that can be edited
+        $allDataKeys = $typeTranslations + array('other' => 'komentar');
+
+        $state = 0;
+        foreach ($allDataKeys as $key => $value) {
+            if (!empty($data[$key])) {
+                $wpdb->update(
+                    $tableName,
+                    array(
+                        $key => $data[$key],
+                    ),
+                    array('id' => $reservationId)
+                );
+                $wpdb->update(
+                    $tableName2,
+                    array(
+                        'state' => 1,
+                        'issue_date' => date("Y-m-d H:i:s"),
+                        'user_id' => $result->user_id,
+                    ),
+                    array(
+                        'id' => $data[$key],
+                    )
+                );
+                $state = 1;
+            }
+
+            $returnKey = $key.'_returned';
+            if (isset($data[$returnKey])) {
+                $wpdb->update(
+                    $tableName,
+                    array(
+                        $returnKey => $data[$returnKey],
+                    ),
+                    array('id' => $reservationId)
+                );
+                var_dump("vracanje: ", $key, " u ", $data[$returnKey]);
+            }
+        }
+        $wpdb->update(
+            $tableName,
+            array(
+                'state' => $state,
+            ),
+            array('id' => $reservationId)
+        );
+    }
+
     /**
-     * showReservations
+     * Should be also called when "Save" button for reservations is used
      *
      * @return void
      */
@@ -162,53 +222,13 @@ class Inventory implements InitInterface
         $context['typeTranslation']  = $this->translateTypes();
         $context['stateTranslation'] = $this->translateState();
 
-        // var_dump($context['request']->post);
+        var_dump("Saving data: ", $context['request']->post);
 
         if (!empty($context['request']->post)) {
-            $result = $wpdb->get_row(
-                "
-            SELECT *
-            FROM $tableName
-            WHERE id = '{$context['request']->post['reservation']}'
-            "
-            );
-            // var_dump($result);
-            $state = 0;
-            foreach ($context['typeTranslation'] as $key => $value) {
-                // var_dump($key);
-                if (!empty($context['request']->post[$key])) {
-                    // var_dump($key);
-                    $wpdb->update(
-                        $tableName,
-                        array(
-                            $key => $context['request']->post[$key],
-                        ),
-                        array(
-                            'id' => $context['request']->post['reservation'],
-                        )
-                    );
-                    $wpdb->update(
-                        $tableName2,
-                        array(
-                            'state' => 1,
-                            'issue_date' => date("Y-m-d H:i:s"),
-                            'user_id' => $result->user_id,
-                        ),
-                        array(
-                            'id' => $context['request']->post[$key],
-                        )
-                    );
-                    $state = 1;
-                }
-            }
-            $wpdb->update(
-                $tableName,
-                array(
-                    'state' => $state,
-                ),
-                array(
-                    'id' => $context['request']->post['reservation'],
-                )
+            $this->editReservation(
+                $context['request']->post['reservation'],
+                $context['typeTranslation'],
+                $context['request']->post
             );
         }
 
@@ -224,6 +244,8 @@ class Inventory implements InitInterface
             ORDER BY state,id desc
             "
         );
+
+        var_dump("Reservations: ", $context['reservations']);
 
         foreach ($context['typeTranslation'] as $key => $value) {
             $context[$key.'s'] = $this->getAvailableInventory($key);
@@ -245,7 +267,8 @@ class Inventory implements InitInterface
         Timber::render($templates, $context);
     }
 
-
+    
+    // Note(Belma): Seems currently unused.
     public function showNewReservations()
     {
         global $wpdb;
