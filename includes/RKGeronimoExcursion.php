@@ -484,8 +484,8 @@ class RKGeronimoExcursion
 
     public function setExcursionColumns($columns)
     {
-        $columns = $this->array_insert_after('title', $columns, 'start', 'od');
-        $columns = $this->array_insert_after('start', $columns, 'end', 'do');
+        $columns = $this->array_insert_after('title', $columns, 'start', 'Od');
+        $columns = $this->array_insert_after('start', $columns, 'end', 'Do');
         $columns = $this->array_insert_after('end', $columns, 'participants', 'Prijavljenih');
 
         return $columns;
