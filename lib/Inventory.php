@@ -164,6 +164,7 @@ class Inventory implements InitInterface
         $state = 0;
         foreach ($allDataKeys as $key => $value) {
             if (!empty($data[$key])) {
+                // Update reservations data
                 $wpdb->update(
                     $tableName,
                     array(
@@ -171,6 +172,7 @@ class Inventory implements InitInterface
                     ),
                     array('id' => $reservationId)
                 );
+                // Update inventory status
                 $wpdb->update(
                     $tableName2,
                     array(
@@ -187,6 +189,7 @@ class Inventory implements InitInterface
 
             $returnKey = $key.'_returned';
             if (isset($data[$returnKey])) {
+                // Update reservations data
                 $wpdb->update(
                     $tableName,
                     array(
@@ -194,7 +197,17 @@ class Inventory implements InitInterface
                     ),
                     array('id' => $reservationId)
                 );
-                var_dump("vracanje: ", $key, " u ", $data[$returnKey]);
+                // Update inventory status
+                $wpdb->update(
+                    $tableName2,
+                    array(
+                        'state' => $data[$returnKey],
+                    ),
+                    array(
+                        'id' => $result->$key,
+                        'user_id' => $result->user_id,
+                    )
+                );
             }
         }
         $wpdb->update(
@@ -222,8 +235,6 @@ class Inventory implements InitInterface
         $context['typeTranslation']  = $this->translateTypes();
         $context['stateTranslation'] = $this->translateState();
 
-        var_dump("Saving data: ", $context['request']->post);
-
         if (!empty($context['request']->post)) {
             $this->editReservation(
                 $context['request']->post['reservation'],
@@ -244,8 +255,6 @@ class Inventory implements InitInterface
             ORDER BY state,id desc
             "
         );
-
-        var_dump("Reservations: ", $context['reservations']);
 
         foreach ($context['typeTranslation'] as $key => $value) {
             $context[$key.'s'] = $this->getAvailableInventory($key);
@@ -367,6 +376,7 @@ class Inventory implements InitInterface
                 array(
                     'type' => $post['type'],
                     'size' => $post['size'],
+                    'state' => $post['status'],
                     'note' => $post['note'],
                 ),
                 array(

@@ -27,7 +27,7 @@
                         <td><input name="size" type="text" id="size" value="{{ itemEdit.size }}" aria-required="true" autocapitalize="none" autocorrect="off" maxlength="60"></td>
                     </tr>
                     <tr class="form-field">
-                        <th scope="row"><label for="status">status</label></th>
+                        <th scope="row"><label for="status">Status</label></th>
                         <td><select name="status" id="status">
                                 {% for key, state in stateTranslation %}
                                     <option value="{{ key }}" {{ (key == itemEdit.state) ? 'selected' : '' }}>{{ state }}</option>

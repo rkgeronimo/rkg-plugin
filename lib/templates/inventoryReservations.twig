@@ -55,19 +55,9 @@
                                 {% endif %}
                                 {% if attribute(reservation, key) is not empty %}
                                     <select name="{{ key }}_returned">
-                                        {% if attribute(reservation, key~"_returned") == "0" %}
-                                            <option value="0" selected>Vraćeno</option>
-                                            <option value="1">Izdano</option>
-                                            <option value="3">Izgubljeno</option>
-                                        {% elseif attribute(reservation, key~"_returned") == "3" %}
-                                            <option value="3" selected>Izgubljeno</option>
-                                            <option value="0">Vraćeno</option>
-                                            <option value="1">Izdano</option>
-                                        {% else %}
-                                            <option value="1" selected>Izdano</option>
-                                            <option value="0">Vraćeno</option>
-                                            <option value="3">Izgubljeno</option>
-                                        {% endif %}
+                                        <option value="1" {{ attribute(reservation, key~"_returned") == "1" ? 'selected' : '' }}>Izdano</option>
+                                        <option value="0" {{ attribute(reservation, key~"_returned") == "0" ? 'selected' : '' }}>Vraćeno</option>
+                                        <option value="3" {{ attribute(reservation, key~"_returned") == "3" ? 'selected' : '' }}>Izgubljeno</option>
                                     </select>
                                 {% endif %}
                             </td>
