@@ -153,16 +153,12 @@ class Reservations extends WP_List_Table
         foreach ($reservations as $key => $value) {
             $user      = new Timber\User($value->user_id);
             $excursion = new Timber\Post($value->post_id);
-             //var_dump($user);
-             //var_dump($value);
 
             $dataSingle =  array(
                 'rkg_name'       => $user->display_name,
                 'excursion'      => $excursion->post_title,
             );
             foreach ($this->typeTranslation as $keyItem => $valueItem) {
-                 //var_dump($valueItem);
-                 //var_dump($keyItem);
                 $status = $keyItem.'_returned';
                 $hidden = 0;
                 if (property_exists($user, $keyItem)) {
@@ -218,65 +214,5 @@ class Reservations extends WP_List_Table
         // }
 
         return $data;
-    }
-
-    /**
-     * sort_data
-     *
-     * @param mixed $aIn
-     * @param mixed $bIn
-     *
-     * @return int
-     */
-    private function sort_data($aIn, $bIn)
-    {
-        $a = $this->rateParticipant($aIn);
-        $b = $this->rateParticipant($bIn);
-        if ($a === $b) {
-            return 0;
-        }
-
-        return ($a < $b) ? 1 : -1;
-    }
-
-    private function rateParticipant($participant)
-    {
-        switch ($participant['category']) {
-            case "I3":
-                $score = 9;
-                break;
-            case "I2":
-                $score = 8;
-                break;
-            case "I1":
-                $score = 7;
-                break;
-            case "R4":
-                $score = 6;
-                break;
-            case "R3":
-                $score = 5;
-                break;
-            case "R2":
-                $score = 4;
-                break;
-            case "R2T":
-                $score = 3;
-                break;
-            case "R1":
-                $score = 2;
-                break;
-            case "R1T":
-                $score = 1;
-                break;
-            default:
-                $score = 0;
-        }
-
-        if (!empty($participant['log'])) {
-            $score += 100;
-        }
-
-        return $score;
     }
 }
