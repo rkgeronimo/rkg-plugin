@@ -229,6 +229,22 @@ class Inventory implements InitInterface
         $context['stateTranslation'] = $this->translateState();
 
         if (!empty($context['request']->post)) {
+            // Creating new custom reservation by admin
+            if (empty($context['request']->post['reservation'])) {
+                $result = $wpdb->insert(
+                    $tableName,
+                    array(
+                        'user_id'   => $context['request']->post['user_id'],
+                    )
+                );
+                $this->editReservation(
+                    $wpdb->insert_id,
+                    $context['typeTranslation'],
+                    $context['request']->post
+                );
+            }
+
+            // Editing already made reservation by user
             $this->editReservation(
                 $context['request']->post['reservation'],
                 $context['typeTranslation'],
@@ -501,7 +517,7 @@ class Inventory implements InitInterface
         $equipment   = $definitions->defineEquipment();
         $tableName   = $wpdb->prefix."rkg_inventory";
 
-        if (!$equipment[$type]['size']) {
+        if (isset($equipment[$type]) && !$equipment[$type]['size']) {
             return $wpdb->get_results(
                 "
             SELECT *
@@ -513,15 +529,17 @@ class Inventory implements InitInterface
         }
 
         $result = null;
-        foreach ($equipment[$type]['size'] as $value) {
-            $result[$value] = $wpdb->get_results(
+        if (isset($equipment[$type]) && isset($equipment[$type]['size'])) {
+            foreach ($equipment[$type]['size'] as $value) {
+                $result[$value] = $wpdb->get_results(
+                    "
+                SELECT *
+                FROM $tableName
+                WHERE type = '$type' AND STATE = 0 and size = '$value'
+                ORDER BY id
                 "
-            SELECT *
-            FROM $tableName
-            WHERE type = '$type' AND STATE = 0 and size = '$value'
-            ORDER BY id
-            "
-            );
+                );
+            }
         }
 
         return $result;

@@ -274,7 +274,7 @@ class Activator
         $sql            = "CREATE TABLE $tableName (
             id mediumint(9) NOT NULL AUTO_INCREMENT PRIMARY KEY,
             user_id mediumint(9) NOT NULL,
-            post_id mediumint(9) NOT NULL,
+            post_id mediumint(9),
             mask text NULL,
             regulator text NULL,
             suit text NULL,
@@ -707,6 +707,7 @@ class Activator
                 'edit_rkgPosts'           => true,
                 'read_private_rkgPosts'   => true,
                 'edit_private_rkgPosts'   => true,
+                'read_excursions' => true,
             )
         );
     }
