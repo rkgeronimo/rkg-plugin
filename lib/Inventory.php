@@ -385,8 +385,8 @@ class Inventory implements InitInterface
         );
 
         $tableName                   = $wpdb->prefix."rkg_excursion_gear";
-        $users         = $wpdb->get_col(
-            "SELECT id FROM "
+        $users         = $wpdb->get_results(
+            "SELECT user_id, updated FROM "
             .$tableName
             ." WHERE "
             .$context['itemEdit']->type.
@@ -394,8 +394,9 @@ class Inventory implements InitInterface
             ." LIMIT 10"
         );
 
-        foreach ($users as $value) {
-            $context['lenters'][] = new Timber\User($value);
+        foreach ($users as $k => $value) {
+            $user = new Timber\User($value->user_id);
+            $context['lenters'][] = ['display_name' => $user->display_name, 'date_updated' => $value->updated];
         }
 
         $templates = array('inventoryEdit.twig');

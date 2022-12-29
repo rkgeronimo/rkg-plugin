@@ -52,6 +52,9 @@
                 <td>
                     {{ lenter.display_name }}
                 </td>
+                <td>
+                    {{ lenter.date_updated|date('j.m.Y') }}
+                </td>
             </tr>
             {% endfor %}
         </table>
