@@ -27,7 +27,7 @@ class Inventory implements InitInterface
         add_action('admin_menu', array($this, 'addInventoryPage'));
         add_action('admin_menu', array($this, 'addInventoryNew'));
         add_action('admin_menu', array($this, 'addReservations'));
-        //add_action('admin_menu', array($this, 'addNewReservations'));
+        add_action('admin_menu', array($this, 'addNewReservations'));
 
         add_action('wp_ajax_check_inventory', array($this, 'checkInventory'));
     }
@@ -150,13 +150,6 @@ class Inventory implements InitInterface
         global $wpdb;
         $tableName = $wpdb->prefix."rkg_excursion_gear";
         $tableName2 = $wpdb->prefix."rkg_inventory";
-        $result = $wpdb->get_row(
-            "
-            SELECT *
-            FROM $tableName
-            WHERE id = '{$reservationId}'
-            "
-        );
 
         // Add other data types that can be edited
         $allDataKeys = $typeTranslations + array('other' => 'komentar');
@@ -178,7 +171,7 @@ class Inventory implements InitInterface
                     array(
                         'state' => 1,
                         'issue_date' => date("Y-m-d H:i:s"),
-                        'user_id' => $result->user_id,
+                        'user_id' => $data['user_id'],
                     ),
                     array(
                         'id' => $data[$key],
@@ -202,10 +195,11 @@ class Inventory implements InitInterface
                     $tableName2,
                     array(
                         'state' => $data[$returnKey],
+                        'issue_date' => null,
+                        'user_id' => null,
                     ),
                     array(
-                        'id' => $result->$key,
-                        'user_id' => $result->user_id,
+                        'id' => $data[$key],
                     )
                 );
             }
@@ -230,7 +224,6 @@ class Inventory implements InitInterface
         $definitions                 = new Definitions();
         $context                     = Timber::get_context();
         $tableName                   = $wpdb->prefix."rkg_excursion_gear";
-        $tableName2                  = $wpdb->prefix."rkg_inventory";
         $context['equipment']        = $definitions->defineEquipment();
         $context['typeTranslation']  = $this->translateTypes();
         $context['stateTranslation'] = $this->translateState();
@@ -277,7 +270,7 @@ class Inventory implements InitInterface
     }
 
     
-    // Note(Belma): Seems currently unused.
+    // Used when adding new reservation from admin panel (not requested by user)
     public function showNewReservations()
     {
         global $wpdb;
@@ -336,7 +329,7 @@ class Inventory implements InitInterface
             "gloves"    => 'Rukavice',
             "fins"      => 'Peraje',
             "bcd"       => 'KPL',
-            "lead_belt" => 'Pojas za olovo',
+            "lead" => 'Pojas za olovo',
         );
 
         return $types;

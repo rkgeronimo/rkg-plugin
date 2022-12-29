@@ -1,7 +1,6 @@
 {% block content %}
     <div class="wrap">
         <h1 id="add-new-inventory" class="wp-heading-inline">Izdavanje opreme</h1>
-        <a href="{{site.url}}/wp/wp-admin/admin.php?page=reservations_new" class="page-title-action">Dodaj novu rezervaciju</a>
     </div>
         <table class="wp-list-table widefat fixed striped users">
             <thead>
@@ -16,10 +15,9 @@
 
             <tbody id="the-list" data-wp-lists="list:user">
                 <form method="post" action="admin.php?page=reservations">
-                    <input type="hidden" name="reservation" value="{{ reservation.id }}" />
                     <tr class="reservation-resolve">
                         <td class="name column-name" data-colname="Ime">
-                            <select class="iid" id="niid" style="width: 70%" name="id">
+                            <select class="iid" id="niid" style="width: 70%" name="user_id">
                                 <option value="" disabled selected></option>
                                 {% for userItem in userList %}
                                     <option value="{{ userItem.ID }}"{{ userItem.ID == user.ID ? ' selected' }}>{{ userItem.data.display_name }}</option>
