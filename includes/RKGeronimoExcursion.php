@@ -272,33 +272,37 @@ class RKGeronimoExcursion
                 $sql = $this->wpdb->prepare(
                     "INSERT INTO $tableName (user_id, post_id) ".
                     "VALUES (%s, %s) ",
-                    $this->post['post_ID'],
-                    $this->post['pr1']
+                    $this->post['pr1'],
+                    $this->post['post_ID']
                 );
+                $this->wpdb->query($sql);
             }
             if ($this->post['pr2']) {
                 $sql = $this->wpdb->prepare(
-                    "INSERT INTO $tableName (user_id, post_id) ".
+                    "INSERT IGNORE INTO $tableName (user_id, post_id) ".
                     "VALUES (%s, %s) ",
-                    $this->post['post_ID'],
-                    $this->post['pr2']
+                    $this->post['pr2'],
+                    $this->post['post_ID']
                 );
+                $this->wpdb->query($sql);
             }
             if ($this->post['pr3']) {
                 $sql = $this->wpdb->prepare(
-                    "INSERT INTO $tableName (user_id, post_id) ".
+                    "INSERT IGNORE INTO $tableName (user_id, post_id) ".
                     "VALUES (%s, %s) ",
-                    $this->post['post_ID'],
-                    $this->post['pr3']
+                    $this->post['pr3'],
+                    $this->post['post_ID']
                 );
+                $this->wpdb->query($sql);
             }
             if ($this->post['pr4']) {
                 $sql = $this->wpdb->prepare(
-                    "INSERT INTO $tableName (user_id, post_id) ".
+                    "INSERT IGNORE INTO $tableName (user_id, post_id) ".
                     "VALUES (%s, %s) ",
-                    $this->post['post_ID'],
-                    $this->post['pr4']
+                    $this->post['pr4'],
+                    $this->post['post_ID']
                 );
+                $this->wpdb->query($sql);
             }
         }
     }
