@@ -149,14 +149,6 @@
     <input type="hidden" name="latitude" value="{{ meta.latitude }}" />
     <input type="hidden" name="longitude" value="{{ meta.longitude }}" />
 </div>
-<div style="display: inline-block">
-    <table class="form-table">
-        <tr>
-            <th><label for="location_unknown">lokacija nepoznata</label></th>
-            <td><input type="checkbox" name="location_unknown" value="true" {{ meta.nitrox ? ' checked' }}></td>
-        </tr>
-    </table>
-</div>
 {% if applicants is not empty %}
 <br /><br />
 <h2 class="hndle ui-sortable-handle"><strong>Prijavljeni</strong></h2>

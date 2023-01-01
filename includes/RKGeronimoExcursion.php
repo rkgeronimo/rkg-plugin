@@ -179,10 +179,6 @@ class RKGeronimoExcursion
 
             $latitude = $this->post['latitude'];
             $longitude = $this->post['longitude'];
-            if (!empty($this->post['location_unknown'])) {
-                $latitude = '45.808286';
-                $longitude = '15.951589';
-            }
 
             $load_registered = $this->wpdb->get_var(
                 "SELECT registered FROM "
