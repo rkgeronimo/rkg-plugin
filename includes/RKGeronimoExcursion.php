@@ -132,7 +132,9 @@ class RKGeronimoExcursion
             'meta_value' => 'applied'
         ));
 
-        $context['userList'] = get_users();
+        $context['userList'] = get_users(array(
+            'role'    => 'member',
+        ));
 
         $templates = array('rkgExcursionMeta.twig');
         Timber::render($templates, $context);

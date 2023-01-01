@@ -302,7 +302,9 @@ class Inventory implements InitInterface
 
         $context['masks']['items'] = $this->getAvailableInventory('mask');
 
-        $context['userList'] = get_users();
+        $context['userList'] = get_users(array(
+            'role'    => 'member',
+        ));
 
         $templates = array( 'inventoryReservationsNew.twig' );
         Timber::render($templates, $context);
