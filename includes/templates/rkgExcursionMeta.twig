@@ -14,7 +14,7 @@
                 <th><label for="deadline">Zadnji dan prijave</label></th>
                 <td><input type="date" name="deadline" value="{{ meta.deadline }}" class="regular-text"></td>
             </tr>
-            {% if user.can('edit_excursion') and (courses is not empty) %}
+            {# {% if user.can('edit_excursion') and (courses is not empty) %}
             <tr>
                 <th><label for="students">Rezervirano za tečajce sa:</label></th>
                 <td>
@@ -29,7 +29,7 @@
                 </td>
             </tr>
             {% endif %}
-            <tr>
+            <tr> #}
                 <th><label for="limitation">Planirano osoba</label></th>
                 <td><input type="number" name="limitation" value="{{ meta.limitation }}" class="regular-text"></td>
             </tr>
