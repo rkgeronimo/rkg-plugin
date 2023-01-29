@@ -38,7 +38,7 @@
                 <td>
                     <select name="leaders" id="leaders">
                         {% for i in 0..4 %}
-                            <option value="{{ i }}{{ meta.leaders == i ? ' selected' }}">{{ i }}</option>
+                            <option value="{{ i }}" {{ meta.leaders == i ? 'selected' }}>{{ i }}</option>
                         {% endfor %}
                     </select>
                 </td>
