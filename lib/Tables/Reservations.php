@@ -48,7 +48,7 @@ class Reservations extends WP_List_Table
     public function prepare_items()
     {
         $columns  = $this->get_columns();
-        $hidden   = ['user_id'];
+        $hidden   = $this->get_hidden_columns();
         $sortable = $this->get_sortable_columns();
 
         $data = $this->table_data();
@@ -99,7 +99,7 @@ class Reservations extends WP_List_Table
      */
     public function get_hidden_columns()
     {
-        return array();
+        return array('user_id');
     }
 
     /**
@@ -133,11 +133,9 @@ class Reservations extends WP_List_Table
     }
 
     public function column_comment($item) {
-       echo '<td class="comment column-comment">';
        echo '<span class="dashicons dashicons-admin-comments rkg-popover-control"></span>';
        echo '<div class="rkg-popover">';
        echo '<textarea name="other">'.$item['comment'].'</textarea>';
-       echo '</div></td>';
     }
 
     /**
@@ -195,7 +193,7 @@ class Reservations extends WP_List_Table
                 $dataSingle[$keyItem] = Timber::compile($templates, $item);
             }
             $dataSingle['comment'] = $value->other;
-            $dataSingle['actions'] = '<button class="reservation-save" data-id="'.$value->id.'">Spremi</button>';
+            $dataSingle['actions'] = '<button class="button button-primary reservation-save" data-id="'.$value->id.'">Spremi</button>';
 
 
             $data[] = $dataSingle;

@@ -51,7 +51,7 @@ class Definitions
                 'size' => array('XS', 'S', 'M', 'L', 'XL', 'XXL'),
                 'prefix' => 'J',
             ),
-            'lead_belt' => array(
+            'lead' => array(
                 'name'  => 'Pojas za olovo',
                 'size' => null,
                 'prefix' => 'O',
