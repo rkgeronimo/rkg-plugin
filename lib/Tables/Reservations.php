@@ -138,6 +138,35 @@ class Reservations extends WP_List_Table
        echo '<textarea name="other">'.$item['comment'].'</textarea>';
     }
 
+    private function fetchData() {
+        global $wpdb;
+        $tableName    = $wpdb->prefix."rkg_excursion_gear";
+
+        $search = ( isset( $_REQUEST['s'] ) ) ? $_REQUEST['s'] : false;
+        if ($search) {
+            return $wpdb->get_results(
+                "
+                SELECT *
+                FROM $tableName AS r
+                JOIN wp_users AS u ON r.user_id = u.ID
+                WHERE '".$search."' = r.mask OR '".$search."' = r.regulator OR '".$search."' = r.suit
+                OR '".$search."' = r.gloves OR '".$search."' = r.fins OR '".$search."' = r.bcd OR '".$search."' = r.lead
+                OR u.display_name LIKE '%".$search."%'
+                ORDER BY r.state,r.id desc
+                "
+            );
+        } else {
+            return $wpdb->get_results(
+                "
+                SELECT *
+                FROM $tableName
+                ORDER BY state,id desc
+                "
+            );
+        }
+
+    }
+
     /**
      * Get the table data
      *
@@ -146,16 +175,8 @@ class Reservations extends WP_List_Table
     private function table_data()
     {
         $data    = array();
-        global $wpdb;
 
-        $tableName    = $wpdb->prefix."rkg_excursion_gear";
-        $reservations = $wpdb->get_results(
-            "
-            SELECT *
-            FROM $tableName
-            ORDER BY state,id desc
-            "
-        );
+        $reservations = $this->fetchData();
 
         foreach ($reservations as $key => $value) {
             $user      = new Timber\User($value->user_id);
@@ -166,8 +187,6 @@ class Reservations extends WP_List_Table
                 'excursion'      => $excursion->post_title,
             );
             $dataSingle['user_id'] = $value->user_id;
-
-            var_dump($value);
 
             foreach ($this->typeTranslation as $keyItem => $valueItem) {
                 $status = $keyItem.'_returned';

@@ -228,7 +228,7 @@ class Inventory implements InitInterface
         $context['typeTranslation']  = $this->translateTypes();
         $context['stateTranslation'] = $this->translateState();
 
-        if (!empty($context['request']->post)) {
+        if (!empty($context['request']->post) && empty($context['request']->post['s'])) {
             // Creating new custom reservation by admin
             if (empty($context['request']->post['reservation'])) {
                 $result = $wpdb->insert(
@@ -277,9 +277,9 @@ class Inventory implements InitInterface
                 new Timber\Post($context['reservations'][$key]->post_id);
         }
 
-        $exampleListTable = new Reservations();
-        $exampleListTable->prepare_items();
-        $context['table'] = $exampleListTable;
+        $listTable = new Reservations();
+        $listTable->prepare_items();
+        $context['table'] = $listTable;
 
         $templates = array( 'inventoryReservations.twig' );
         Timber::render($templates, $context);
