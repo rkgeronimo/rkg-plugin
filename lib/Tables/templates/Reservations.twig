@@ -1,3 +1,4 @@
+({{ given }})
 {% if given is empty %}
     <div class="reservations-blocklet">
         {% if hidden %}
@@ -9,18 +10,7 @@
                 {{ size }}
             </div>
             <div>
-                {% if properties.prefix is iterable %}
-                    <select>
-                        {% for prefix in properties.prefix %}
-                            <option>{{ prefix }}</option>
-                        {% endfor %}
-                    </select>
-                {% else %}
-                    {{ properties.prefix }}
-                {% endif %}
-            </div>
-            <div>
-                <input type="number" />
+                <input type="text" style="width: 70%" placeholder="Šifra" />
             </div>
         {% endif %}
     </div>

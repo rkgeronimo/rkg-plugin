@@ -48,7 +48,7 @@ class Reservations extends WP_List_Table
     public function prepare_items()
     {
         $columns  = $this->get_columns();
-        $hidden   = $this->get_hidden_columns();
+        $hidden   = ['user_id'];
         $sortable = $this->get_sortable_columns();
 
         $data = $this->table_data();
@@ -79,6 +79,7 @@ class Reservations extends WP_List_Table
         $columns         = array(
             'rkg_name'       => 'Korisnik',
             'excursion'      => 'Izlet',
+            'user_id' => 'user_id'
         );
 
         foreach ($this->typeTranslation as $key => $value) {
@@ -131,6 +132,14 @@ class Reservations extends WP_List_Table
         }
     }
 
+    public function column_comment($item) {
+       echo '<td class="comment column-comment">';
+       echo '<span class="dashicons dashicons-admin-comments rkg-popover-control"></span>';
+       echo '<div class="rkg-popover">';
+       echo '<textarea name="other">'.$item['comment'].'</textarea>';
+       echo '</div></td>';
+    }
+
     /**
      * Get the table data
      *
@@ -158,6 +167,10 @@ class Reservations extends WP_List_Table
                 'rkg_name'       => $user->display_name,
                 'excursion'      => $excursion->post_title,
             );
+            $dataSingle['user_id'] = $value->user_id;
+
+            var_dump($value);
+
             foreach ($this->typeTranslation as $keyItem => $valueItem) {
                 $status = $keyItem.'_returned';
                 $hidden = 0;

@@ -3,27 +3,30 @@
         <h1 id="add-new-inventory" class="wp-heading-inline">Izdavanje opreme</h1>
         <a href="{{site.url}}/wp/wp-admin/admin.php?page=reservations_new" class="page-title-action">Dodaj novu rezervaciju</a>
     </div>
-{#{{ table.display }}#}
-        <table class="wp-list-table widefat fixed striped users">
+{{ table.display }}
+
+<br /><br /><br /><br />
+        <table class="wp-list-table widefat fixed striped table-view-list reservations">
             <thead>
                 <tr>
-                    <th scope="col" class="manage-column column-name">Korisnik</th>
-                    <th scope="col" class="manage-column column-name">Izlet</th>
+                    <th scope="col" class="manage-column">Korisnik</th>
+                    <th scope="col" class="manage-column">Izlet</th>
                     {% for type in typeTranslation %}
-                        <th scope="col" id="name" class="manage-column column-name">{{ type }}</th>
+                        <th scope="col" id="name" class="manage-column">{{ type }}</th>
                     {% endfor %}
-                    <th scope="col" class="manage-column column-name">Komentar</th>
-                    <th scope="col" class="manage-column column-name"></th>
+                    <th scope="col" class="manage-column">Komentar</th>
+                    <th scope="col" class="manage-column"></th>
+                </tr>
             </thead>
 
-            <tbody id="the-list" data-wp-lists="list:user">
+            <tbody id="the-list">
 
                 {% for reservation in reservations %}
-                <tr>
-                    <td class="name column-name" data-colname="Ime" rowspan="2">{{ reservation.user.display_name }}</td>
-                    <td class="name column-name" data-colname="Ime" rowspan="2">{{ reservation.post.post_title }}</td>
+                <tr class="is-expanded">
+                    <td class="has-row-actions">{{ reservation.user.display_name }}</td>
+                    <td>{{ reservation.post.post_title }}</td>
                     {% for key,type in typeTranslation %}
-                        <td scope="col" id="name" class="manage-column column-name">
+                        <td>
                         {% if attribute(reservation.user, key) is empty and attribute(reservation.user, key~'_size') is not empty %}
                             {{ attribute(reservation.user, key~'_size') }}
                         {% elseif key == 'lead_belt' %}
@@ -32,11 +35,6 @@
                         {{ attribute(reservation, key) ? '('~attribute(reservation, key)~')' }}
                         </td>
                     {% endfor %}
-                            <td scope="col" id="name" class="manage-column column-name">
-                            </td>
-                    <td class="name column-name" data-colname="Ime">
-                            <input type="submit" name="createuser" class="button button-secondary" value="Vrati sve">
-                    </td>
                 </tr>
                 <form method="post" action="admin.php?page=reservations">
                     <input type="hidden" name="reservation" value="{{ reservation.id }}" />
