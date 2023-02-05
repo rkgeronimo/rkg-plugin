@@ -313,6 +313,7 @@ class Inventory implements InitInterface
     public function checkInventory()
     {
         $id        = $_POST['id'];
+        $type      = $_POST['type'];
         global $wpdb;
         $tableName                   = $wpdb->prefix."rkg_inventory";
 
@@ -321,6 +322,7 @@ class Inventory implements InitInterface
             SELECT *
             FROM $tableName
             WHERE id = '$id' AND state = 0
+            AND type = '$type'
             "
         );
 
@@ -328,7 +330,7 @@ class Inventory implements InitInterface
         if ($result) {
             $json = "ok";
         }
-        echo  json_encode($json);
+        echo json_encode($json);
         wp_die();
     }
 

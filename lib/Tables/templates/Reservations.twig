@@ -2,14 +2,14 @@
     <div class="reservations-blocklet">
         {% if hidden %}
             <span class="dashicons dashicons-plus new-inventory-icon"></span>
-            <input class="new-inventory iid" name="{{ key }}" type="text" placeholder="Šifra" style="width: 70%"/>
+            <input class="new-inventory iid" name="{{ item }}" type="text" placeholder="Šifra" style="width: 70%"/>
         {% else %}
 
             <div>
                 {{ size }}
             </div>
             <div>
-                <input type="text" style="width: 70%" placeholder="Šifra" />
+                <input type="text" name="{{ item }}" style="width: 80%" placeholder="Šifra" />
             </div>
         {% endif %}
     </div>
