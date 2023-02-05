@@ -14,10 +14,10 @@
             </thead>
 
             <tbody id="the-list" data-wp-lists="list:user">
-                <form method="post" action="admin.php?page=reservations">
-                    <tr class="reservation-resolve">
+                <form id="custom-new-reservation" method="post" action="admin.php?page=reservations">
+                    <tr class="reservations-blocklet">
                         <td class="name column-name" data-colname="Ime">
-                            <select class="iid" id="niid" style="width: 70%" name="user_id">
+                            <select class="iid" id="niid" style="width: 100%" name="user_id">
                                 <option value="" disabled selected></option>
                                 {% for userItem in userList %}
                                     <option value="{{ userItem.ID }}"{{ userItem.ID == user.ID ? ' selected' }}>{{ userItem.data.display_name }}</option>
@@ -34,7 +34,7 @@
                                 <div class="rkg-popover"><textarea name="other"></textarea></div>
                             </td>
                         <td class="name column-name" data-colname="Ime">
-                            <input type="submit" name="createuser" class="button button-primary" value="Spremi">
+                            <input type="submit" class="button button-primary" value="Spremi">
                         </td>
                     </tr>
                 </form>

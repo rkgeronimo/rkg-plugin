@@ -31,6 +31,7 @@ class Inventory implements InitInterface
 
         add_action('wp_ajax_check_inventory', array($this, 'checkInventory'));
         add_action('wp_ajax_edit_reservation', array($this, 'editReservation'));
+        add_action('wp_ajax_add_custom_reservation', array($this, 'addCustomReservation'));
     }
 
     /**
@@ -229,23 +230,6 @@ class Inventory implements InitInterface
         $context['typeTranslation']  = $this->translateTypes();
         $context['stateTranslation'] = $this->translateState();
 
-        if (!empty($context['request']->post) && empty($context['request']->post['s'])) {
-            // Creating new custom reservation by admin
-            if (empty($context['request']->post['reservation'])) {
-                $result = $wpdb->insert(
-                    $tableName,
-                    array(
-                        'user_id'   => $context['request']->post['user_id'],
-                    )
-                );
-                $this->saveReservation(
-                    $wpdb->insert_id,
-                    $context['typeTranslation'],
-                    $context['request']->post
-                );
-            }
-        }
-
         $where = "";
         if (isset($context['request']->get['type'])) {
             $where = "WHERE type = '".$context['request']->get['type']."'";
@@ -294,6 +278,30 @@ class Inventory implements InitInterface
         );
 
         echo json_encode("ok");
+    }
+
+    public function addCustomReservation() {
+        global $wpdb;
+        $context                     = Timber::get_context();
+        $context['typeTranslation']  = $this->translateTypes();
+        $tableName                   = $wpdb->prefix."rkg_excursion_gear";
+
+        if (!empty($context['request']->post)) {
+            // Creating new custom reservation by admin
+            if (empty($context['request']->post['reservation'])) {
+                $result = $wpdb->insert(
+                    $tableName,
+                    array(
+                        'user_id'   => $context['request']->post['user_id'],
+                    )
+                );
+                $this->saveReservation(
+                    $wpdb->insert_id,
+                    $context['typeTranslation'],
+                    $context['request']->post
+                );
+            }
+        }
     }
 
     
