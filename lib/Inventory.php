@@ -158,36 +158,36 @@ class Inventory implements InitInterface
 
         $state = 0;
         foreach ($allDataKeys as $key => $value) {
-            // Server-side validation to prevent overwriting inventory rent 
-            if (!$this->isInventoryAvailable($data[$key], $key)) {
-                continue;
-            }
+            $returnKey = $key.'_returned';
 
             if (!empty($data[$key])) {
-                // Update reservations data
-                $wpdb->update(
-                    $tableName,
-                    array(
-                        $key => $data[$key],
-                    ),
-                    array('id' => $reservationId)
-                );
-                // Update inventory status
-                $wpdb->update(
-                    $tableName2,
-                    array(
-                        'state' => 1,
-                        'issue_date' => date("Y-m-d H:i:s"),
-                        'user_id' => $data['user_id'],
-                    ),
-                    array(
-                        'id' => $data[$key],
-                    )
-                );
+                // Server-side validation to prevent overwriting inventory rent 
+                if ($this->isInventoryAvailable($data[$key], $key)) {
+
+                    // Update reservations data
+                    $wpdb->update(
+                        $tableName,
+                        array(
+                            $key => $data[$key],
+                        ),
+                        array('id' => $reservationId)
+                    );
+                    // Update inventory status
+                    $wpdb->update(
+                        $tableName2,
+                        array(
+                            'state' => 1,
+                            'issue_date' => date("Y-m-d H:i:s"),
+                            'user_id' => $data['user_id'],
+                        ),
+                        array(
+                            'id' => $data[$key],
+                        )
+                    );
+                }
                 $state = 1;
             }
 
-            $returnKey = $key.'_returned';
             if (isset($data[$returnKey])) {
                 // Update reservations data
                 $wpdb->update(
@@ -365,6 +365,10 @@ class Inventory implements InitInterface
     }
 
     private function isInventoryAvailable($id, $type) {
+        if (in_array($type, array('lead', 'lead_belt'))) {
+            return true;
+        }
+        
         global $wpdb;
         $tableName                   = $wpdb->prefix."rkg_inventory";
         $result = $wpdb->get_row(
