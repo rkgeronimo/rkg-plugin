@@ -30,6 +30,7 @@ class Inventory implements InitInterface
         add_action('admin_menu', array($this, 'addNewReservations'));
 
         add_action('wp_ajax_check_inventory', array($this, 'checkInventory'));
+        add_action('wp_ajax_edit_reservation', array($this, 'editReservation'));
     }
 
     /**
@@ -146,7 +147,7 @@ class Inventory implements InitInterface
         );
     }
 
-    private function editReservation($reservationId, $typeTranslations, $data) {
+    private function saveReservation($reservationId, $typeTranslations, $data) {
         global $wpdb;
         $tableName = $wpdb->prefix."rkg_excursion_gear";
         $tableName2 = $wpdb->prefix."rkg_inventory";
@@ -237,19 +238,12 @@ class Inventory implements InitInterface
                         'user_id'   => $context['request']->post['user_id'],
                     )
                 );
-                $this->editReservation(
+                $this->saveReservation(
                     $wpdb->insert_id,
                     $context['typeTranslation'],
                     $context['request']->post
                 );
             }
-
-            // Editing already made reservation by user
-            $this->editReservation(
-                $context['request']->post['reservation'],
-                $context['typeTranslation'],
-                $context['request']->post
-            );
         }
 
         $where = "";
@@ -283,6 +277,23 @@ class Inventory implements InitInterface
 
         $templates = array( 'inventoryReservations.twig' );
         Timber::render($templates, $context);
+    }
+
+    public function editReservation()
+    {
+        global $wpdb;
+        $tableName                   = $wpdb->prefix."rkg_excursion_gear";
+        $context                     = Timber::get_context();
+        $context['typeTranslation']  = $this->translateTypes();
+
+        // Editing already made reservation by user
+        $this->saveReservation(
+            $context['request']->post['reservation'],
+            $context['typeTranslation'],
+            $context['request']->post
+        );
+
+        echo json_encode("ok");
     }
 
     

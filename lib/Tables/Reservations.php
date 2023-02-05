@@ -142,7 +142,7 @@ class Reservations extends WP_List_Table
         global $wpdb;
         $tableName    = $wpdb->prefix."rkg_excursion_gear";
 
-        $search = ( isset( $_REQUEST['s'] ) ) ? $_REQUEST['s'] : false;
+        $search = ( isset( $_REQUEST['s'] ) ) ? sanitize_text_field($_REQUEST['s']) : false;
         if ($search) {
             return $wpdb->get_results(
                 "
