@@ -158,6 +158,11 @@ class Inventory implements InitInterface
 
         $state = 0;
         foreach ($allDataKeys as $key => $value) {
+            // Server-side validation to prevent overwriting inventory rent 
+            if (!$this->isInventoryAvailable($data[$key], $key)) {
+                continue;
+            }
+
             if (!empty($data[$key])) {
                 // Update reservations data
                 $wpdb->update(
@@ -265,6 +270,11 @@ class Inventory implements InitInterface
 
     public function editReservation()
     {
+        if (!current_user_can('manage_equipment')) {
+            status_header(401);
+            wp_die();
+        }
+
         global $wpdb;
         $tableName                   = $wpdb->prefix."rkg_excursion_gear";
         $context                     = Timber::get_context();
@@ -281,6 +291,11 @@ class Inventory implements InitInterface
     }
 
     public function addCustomReservation() {
+        if (!current_user_can('manage_equipment')) {
+            status_header(401);
+            wp_die();
+        }
+
         global $wpdb;
         $context                     = Timber::get_context();
         $context['typeTranslation']  = $this->translateTypes();
@@ -295,6 +310,10 @@ class Inventory implements InitInterface
                         'user_id'   => $context['request']->post['user_id'],
                     )
                 );
+                if (!$result) {
+                    return false;
+                }
+
                 $this->saveReservation(
                     $wpdb->insert_id,
                     $context['typeTranslation'],
@@ -333,9 +352,21 @@ class Inventory implements InitInterface
     {
         $id        = $_POST['id'];
         $type      = $_POST['type'];
+        
+
+        $result = $this->isInventoryAvailable($id, $type);
+
+        $json = "no";
+        if ($result) {
+            $json = "ok";
+        }
+        echo json_encode($json);
+        wp_die();
+    }
+
+    private function isInventoryAvailable($id, $type) {
         global $wpdb;
         $tableName                   = $wpdb->prefix."rkg_inventory";
-
         $result = $wpdb->get_row(
             "
             SELECT *
@@ -345,12 +376,10 @@ class Inventory implements InitInterface
             "
         );
 
-        $json = "no";
         if ($result) {
-            $json = "ok";
+            return true;
         }
-        echo json_encode($json);
-        wp_die();
+        return false;
     }
 
     /**
@@ -394,6 +423,11 @@ class Inventory implements InitInterface
      */
     private function showInventoryEdit()
     {
+        if (!current_user_can('manage_equipment')) {
+            status_header(401);
+            wp_die();
+        }
+
         global $wpdb;
         $context                     = Timber::get_context();
         $tableName                   = $wpdb->prefix."rkg_inventory";
@@ -449,6 +483,11 @@ class Inventory implements InitInterface
      */
     private function showInventoryList()
     {
+        if (!current_user_can('manage_equipment')) {
+            status_header(401);
+            wp_die();
+        }
+
         global $wpdb;
         $context                     = Timber::get_context();
         $tableName                   = $wpdb->prefix."rkg_inventory";
