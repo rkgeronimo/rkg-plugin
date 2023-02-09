@@ -153,6 +153,14 @@ class Inventory implements InitInterface
         $tableName = $wpdb->prefix."rkg_excursion_gear";
         $tableName2 = $wpdb->prefix."rkg_inventory";
 
+        $originalReservation = $wpdb->get_row(
+            "
+            SELECT *
+            FROM $tableName
+            WHERE id = '$reservationId'
+            "
+        );
+
         // Add other data types that can be edited
         $allDataKeys = $typeTranslations + array('other' => 'komentar');
 
@@ -160,10 +168,10 @@ class Inventory implements InitInterface
         foreach ($allDataKeys as $key => $value) {
             $returnKey = $key.'_returned';
 
+            // New type of inventory is being rented (not only status change for existing entries)
             if (!empty($data[$key])) {
                 // Server-side validation to prevent overwriting inventory rent 
                 if ($this->isInventoryAvailable($data[$key], $key)) {
-
                     // Update reservations data
                     $wpdb->update(
                         $tableName,
@@ -206,7 +214,7 @@ class Inventory implements InitInterface
                         'user_id' => null,
                     ),
                     array(
-                        'id' => $data[$key],
+                        'id' => $originalReservation->$key,
                     )
                 );
             }
