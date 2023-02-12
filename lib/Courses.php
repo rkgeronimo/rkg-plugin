@@ -99,8 +99,8 @@ class Courses implements InitInterface
     {
         add_submenu_page(
             'admin.php',
-            'Izlet - izvještaj',
-            'Izlet - izvještaj',
+            'Tečaj - izvještaj',
+            'Tečaj - izvještaj',
             'manage_options',
             'course_report',
             array($this, 'showCourseReport')
@@ -232,8 +232,8 @@ class Courses implements InitInterface
     {
         $hook = add_submenu_page(
             null,
-            'Izlet - izvještaj',
-            'Izlet - izvještaj',
+            'Tečaj - izvještaj',
+            'Tečaj - izvještaj',
             'edit_courses',
             'course_medical',
             function () {

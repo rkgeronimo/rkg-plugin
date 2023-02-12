@@ -71,8 +71,8 @@ class Excursions implements InitInterface
     {
         add_submenu_page(
             'admin.php',
-            'Izlet - izvještaj',
-            'Izlet - izvještaj',
+            'Izlet - status',
+            'Izlet - status',
             'edit_excursion',
             'excursion_report',
             array($this, 'showExcursionReport')
