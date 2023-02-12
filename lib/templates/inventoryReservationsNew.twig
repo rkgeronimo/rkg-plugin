@@ -2,10 +2,10 @@
     <div class="wrap">
         <h1 id="add-new-inventory" class="wp-heading-inline">Izdavanje opreme</h1>
     </div>
-        <table class="wp-list-table widefat fixed striped users">
+        <table class="wp-list-table widefat fixed striped table-view-list reservations">
             <thead>
                 <tr>
-                    <th scope="col" class="manage-column column-name">Korisnik</th>
+                    <th scope="col" class="manage-column column-name column-primary">Korisnik</th>
                     {% for type in typeTranslation %}
                         <th scope="col" id="name" class="manage-column column-name">{{ type }}</th>
                     {% endfor %}
@@ -13,10 +13,10 @@
                     <th scope="col" class="manage-column column-name"></th>
             </thead>
 
-            <tbody id="the-list" data-wp-lists="list:user">
+            <tbody id="the-list" data-wp-lists="list:reservation">
                 <form id="custom-new-reservation" method="post" action="admin.php?page=reservations">
-                    <tr class="reservations-blocklet">
-                        <td class="name column-name" data-colname="Ime">
+                    <tr class="reservations-blocklet is-expanded">
+                        <td class="name column-name column-primary" data-colname="Ime">
                             <select class="iid" id="niid" style="width: 100%" name="user_id">
                                 <option value="" disabled selected></option>
                                 {% for userItem in userList %}
@@ -25,15 +25,15 @@
                             </select>
                         </td>
                         {% for key,type in typeTranslation %}
-                            <td scope="col" id="name" class="manage-column column-name">
-                                    <input class="iid" name="{{ key }}" type="text" placeholder="Šifra" style="width: 70%" value="{{ attribute(reservation, key) }}"/>
+                            <td class="manage-column column-name" data-colname={{type}}>
+                                <input class="iid" name="{{ key }}" type="text" placeholder="Šifra" style="width: 70%" value="{{ attribute(reservation, key) }}"/>
                             </td>
                         {% endfor %}
-                            <td scope="col" id="name" class="manage-column column-name">
+                            <td class="manage-column column-name" data-colname="Komentar">
                                 <span class="dashicons dashicons-admin-comments rkg-popover-control"></span>
                                 <div class="rkg-popover"><textarea name="other"></textarea></div>
                             </td>
-                        <td class="name column-name" data-colname="Ime">
+                        <td>
                             <input type="submit" class="button button-primary" value="Spremi">
                         </td>
                     </tr>
