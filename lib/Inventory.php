@@ -252,7 +252,7 @@ class Inventory implements InitInterface
             SELECT *
             FROM $tableName
             $where
-            ORDER BY state,id desc
+            ORDER BY id desc
             "
         );
 

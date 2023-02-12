@@ -52,7 +52,7 @@ class Reservations extends WP_List_Table
         $sortable = $this->get_sortable_columns();
 
         $data = $this->table_data();
-        usort($data, array(&$this, "sort_data"));
+        // usort($data, array(&$this, "sort_data"));
 
         $perPage     = 100;
         $currentPage = $this->get_pagenum();
@@ -152,7 +152,7 @@ class Reservations extends WP_List_Table
                 WHERE '".$search."' = r.mask OR '".$search."' = r.regulator OR '".$search."' = r.suit
                 OR '".$search."' = r.gloves OR '".$search."' = r.fins OR '".$search."' = r.bcd OR '".$search."' = r.lead
                 OR u.display_name LIKE '%".$search."%'
-                ORDER BY r.state,r.id desc
+                ORDER BY r.id desc
                 "
             );
         } else {
@@ -160,7 +160,7 @@ class Reservations extends WP_List_Table
                 "
                 SELECT *
                 FROM $tableName
-                ORDER BY state,id desc
+                ORDER BY id desc
                 "
             );
         }
