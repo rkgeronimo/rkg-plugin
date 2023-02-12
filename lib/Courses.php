@@ -485,7 +485,7 @@ class Courses implements InitInterface
     {
         wp_register_style(
             'google_fonts',
-            'https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700'
+            'https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700&display=swap'
         );
         wp_enqueue_style(
             'google_fonts'
