@@ -297,7 +297,7 @@ class Inventory implements InitInterface
             $context['request']->post
         );
 
-        echo json_encode("ok");
+        return json_encode("ok");
     }
 
     public function addCustomReservation() {
