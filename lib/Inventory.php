@@ -373,7 +373,7 @@ class Inventory implements InitInterface
     }
 
     private function isInventoryAvailable($id, $type) {
-        if (in_array($type, array('lead', 'lead_belt'))) {
+        if (in_array($type, array('lead', 'lead_belt', 'other', 'comment'))) {
             return true;
         }
         
