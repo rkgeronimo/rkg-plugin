@@ -3,8 +3,13 @@
         <h1 id="add-new-inventory">Dodaj novi komad opreme</h1>
 
         {% if request.post is not empty %}
-            <div id="message" class="updated notice is-dismissible"><p>Dodan je novi komad opreme.</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Isključi ovu napomenu.</span></button></div>
+            {% if error == false %}
+                <div id="message" class="updated notice is-dismissible"><p>Dodan je novi komad opreme.</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Isključi ovu napomenu.</span></button></div>
+            {% else %}
+                <div id="message" class="updated error is-dismissible"><p>Došlo je do greške prilikom spremanja. Provjeri da ne postoji već oprema s istom šifrom.</p></div>
+            {% endif %}
         {% endif %}
+        
         <form method="post" name="createuser" id="createuser" class="validate" novalidate="novalidate">
             <input name="action" type="hidden" value="createInventoryItem">
             <table class="form-table">

@@ -95,12 +95,13 @@ class Inventory implements InitInterface
     {
         $context                    = Timber::get_context();
         $context['typeTranslation'] = $this->translateTypes();
+        $context['error'] = false;
 
         $post = $context['request']->post;
         if (!empty($post)) {
             global $wpdb;
             $tableName = $wpdb->prefix."rkg_inventory";
-            $wpdb->insert(
+            $result = $wpdb->insert(
                 $tableName,
                 array(
                     'id' => $post['id'],
@@ -108,6 +109,7 @@ class Inventory implements InitInterface
                     'size' => $post['size'],
                 )
             );
+            $context['error'] = !!!$result;
         }
 
         $templates = array( 'inventoryNew.twig' );
