@@ -77,6 +77,8 @@ class Courses implements InitInterface
         );
         add_filter('months_dropdown_results', array($this, 'my_remove_date_filter'));
 
+        add_action('admin_menu', array($this, 'courseInterests'));
+
         add_filter('bulk_actions-edit-course', '__return_empty_array', 100);
     }
 
@@ -558,6 +560,23 @@ class Courses implements InitInterface
         );
     }
 
+    public function courseInterests()
+    {
+        add_submenu_page(
+            'edit.php?post_type=course',
+            'Zainteresirani',
+            'Zainteresirani',
+            'edit_courses',
+            'course_interests',
+            array(
+                $this,
+                'courseInterestPage'
+            )
+        );
+    }
+
+    
+
     /**
      * courseTemplatePage
      *
@@ -604,6 +623,30 @@ class Courses implements InitInterface
         );
 
         $templates = array( 'courseTemplateMenu.twig' );
+        Timber::render($templates, $context);
+    }
+
+    public function courseInterestPage()
+    {
+        if(!current_user_can('edit_course')) {
+            Timber::render('single-no-pasaran.twig', $context);
+        }
+
+        $tableName          = $this->wpdb->prefix."rkg_course_interest";
+        $userTable          = $this->wpdb->prefix."users";
+        $courseTable                  = $this->wpdb->prefix."rkg_course_template";
+        $context            = Timber::get_context();
+
+        $context['data'] = $this->wpdb->get_results(
+            "SELECT i.id, u.display_name, u.user_email, c.name as course_name, i.created"
+            ." FROM "
+            .$tableName." AS i " 
+            ."INNER JOIN ".$userTable." AS u ON i.user_id = u.id "
+            ."INNER JOIN ".$courseTable." AS c ON i.course_template_id = c.id "
+            ." ORDER BY i.created DESC"
+        );
+
+        $templates = array( 'courseInterest.twig' );
         Timber::render($templates, $context);
     }
 
