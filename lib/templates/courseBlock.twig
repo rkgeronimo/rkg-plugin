@@ -4,7 +4,7 @@
             <div class="course-block-container">
                 <a id="course-block-link-{{course.id}}" href="{{ course.link }}">
                     <div class="course-block-h">{{ course.category }}</div>
-                    <div id="course-block-date-{{course.id}}" class="course-block-date">{{ course.starttime|date('d.n.') }}</div>
+                    <div id="course-block-date-{{course.id}}" class="course-block-date">{{ course.starttime|date('j.n.') }}</div>
                     <div id="course-block-title-{{course.id}}" class="course-block-h2">{{ course.post_title }}</div>
                     <div id="course-block-content-{{course.id}}" class="course-block-p">{{ course.post_content|striptags|slice(0, 500) }}</div>
                 </a>
@@ -16,14 +16,14 @@
                                        href="#"
                                        data-course="{{ course.id }}"
                                        data-name="{{ course.post_title }}"
-                                       data-date="{{ course.starttime|date('d.m.Y.') }}"
+                                       data-date="{{ course.starttime|date('j.n.Y.') }}"
                                        >ODJAVI SE</a>
                                 {% else %}
                                     <a id="course-block-signup-{{course.id}}" class="course-signup"
                                        href="#"
                                        data-course="{{ course.id }}"
                                        data-name="{{ course.post_title }}"
-                                       data-date="{{ course.starttime|date('d.m.Y.') }}"
+                                       data-date="{{ course.starttime|date('j.n.Y.') }}"
                                        data-link="{{ course.link }}"
                                        >PRIJAVI SE</a>
                                 {% endif %}
@@ -42,7 +42,7 @@
                                              data-date="{{ term.starttime|date('d.n.') }}"
                                              data-title="{{ term.post_title }}"
                                              data-content="{{ term.post_content|striptags|slice(0, 500) }}"
-                                             data-signdate="{{ term.starttime|date('d.m.Y.') }}"
+                                             data-signdate="{{ term.starttime|date('j.n.Y.') }}"
                                              {% if attribute(user,'application-'~term.id) == 'applied' %}
                                                  data-signclass = "course-signout"
                                                  data-signtext = "ODJAVI SE"
@@ -52,9 +52,9 @@
                                              {% endif %}
                                              >
                                              {% if term.starttime|date('Y') != term.endtime|date('Y') %}
-                                                 {{ term.starttime|date('d.m.Y.') }} - {{ term.endtime|date('d.m.Y.') }}
+                                                 {{ term.starttime|date('j.n.Y.') }} - {{ term.endtime|date('j.n.Y.') }}
                                              {% else %}
-                                                 {{ term.starttime|date('d.m.') }} - {{ term.endtime|date('d.m.Y.') }}
+                                                 {{ term.starttime|date('j.n.') }} - {{ term.endtime|date('j.n.Y.') }}
                                              {% endif%}
                                         </div>
                                     {% endfor %}
