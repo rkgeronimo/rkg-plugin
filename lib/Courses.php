@@ -104,7 +104,7 @@ class Courses implements InitInterface
             'admin.php',
             'Tečaj - izvještaj',
             'Tečaj - izvještaj',
-            'manage_options',
+            'read_private_courses',
             'course_report',
             array($this, 'showCourseReport')
         );
