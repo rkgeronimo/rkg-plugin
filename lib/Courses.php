@@ -75,6 +75,9 @@ class Courses implements InitInterface
             10,
             2
         );
+
+        add_action('trashed_post', array($this, 'onDelete'));
+
         add_filter('months_dropdown_results', array($this, 'my_remove_date_filter'));
 
         add_action('admin_menu', array($this, 'courseInterests'));
@@ -1081,4 +1084,16 @@ class Courses implements InitInterface
         }
         return false;
     }
+
+
+    public function onDelete($postId) {
+        if ("course" !== get_post_type($postId)) {
+            return $postId;
+        }
+
+        global $wpdb;
+        $tableName = $wpdb->prefix."rkg_course_meta";
+        $this->wpdb->delete($tableName, array('id' => $postId));
+    }
+
 }
