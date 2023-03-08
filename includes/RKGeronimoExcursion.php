@@ -68,6 +68,15 @@ class RKGeronimoExcursion
                     'rkgCreateExcursionMetaboxes',
                 ),
                 'capability_type' => array('excursion', 'excursions'),
+                'capabilities' => array(
+                    'edit_post' => 'edit_excursion',
+                    'edit_posts' => 'edit_excursions',
+                    'edit_others_posts' => 'edit_other_excursions',
+                    'publish_posts' => 'publish_excursions',
+                    'read_post' => 'read_excursions',
+                    'read_private_posts' => 'read_private_excursions',
+                    'delete_post' => 'delete_excursions'
+                ),
             )
         );
     }
