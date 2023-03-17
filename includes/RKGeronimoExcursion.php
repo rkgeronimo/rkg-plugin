@@ -368,8 +368,8 @@ class RKGeronimoExcursion
             $tableName." AS rem "
             ."INNER JOIN ".$secondJoin." AS p ON rem.id = p.id "
             ."INNER JOIN ".$firstJoin." AS u ON p.post_author = u.id "
-            ."WHERE rem.starttime < ".date("'Y-m-d'")
-            ." AND rem.endtime > ".date("'Y-m-d'")
+            ."WHERE rem.starttime <= ".date("'Y-m-d'")
+            ." AND rem.endtime >= ".date("'Y-m-d'")
             ." AND rem.canceled=0"
             ." AND p.post_status='publish'"
             ." ORDER BY rem.starttime ASC");
