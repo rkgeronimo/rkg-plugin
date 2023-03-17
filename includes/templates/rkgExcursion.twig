@@ -34,7 +34,7 @@
 <span class="dashicons dashicons-controls-pause"></span>
                         {% endif -%}
                         <div class="excursion-p">{{ excursion.starttime|date('d.m.Y.') }} - {{ excursion.endtime|date('d.m.Y.') }}</div>
-                        <div class="excursion-p">Organizator: {{ excursion.display_name }}</div>
+                        <div class="excursion-p">Izlet organizira: {{ excursion.display_name }}</div>
                         <div class="excursion-p">Izlet je u tijeku</div>
                     </div>
                     </a>
@@ -49,7 +49,7 @@
 <span class="dashicons dashicons-controls-pause"></span>
                         {% endif -%}
                         <div class="excursion-p">{{ excursion.starttime|date('d.m.Y.') }} - {{ excursion.endtime|date('d.m.Y.') }}</div>
-                        <div class="excursion-p">Organizator: {{ excursion.display_name }}</div>
+                        <div class="excursion-p">Izlet organizira: {{ excursion.display_name }}</div>
                         {% set freeSpaces = excursion.limitation - excursion.registered %}
                         {% if freeSpaces <= 0 %}
                         <div class="excursion-p">Izlet je popunjen</div>
@@ -96,7 +96,7 @@
 <span class="dashicons dashicons-controls-pause"></span>
                         {% endif -%}
                             <div class="excursion-p">{{ excursion.starttime|date('d.m.Y.') }} - {{ excursion.endtime|date('d.m.Y.') }}</div>
-                            <div class="excursion-p">Organizator: {{ excursion.display_name }}</div>
+                            <div class="excursion-p">Izlet organizira: {{ excursion.display_name }}</div>
                             <div class="excursion-p">Izlet je prošao</div>
                         </div>
                     </a>
