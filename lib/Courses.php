@@ -1066,7 +1066,7 @@ class Courses implements InitInterface
             $emails[] = $user->user_email;
         }
 
-        return "<a href='mailto:".implode(',', $emails).
+        return "<a href='mailto:".implode(';', $emails).
             "'>Pošalji e-mail prijavljenima (".count($emails).")</a>";
     }
 

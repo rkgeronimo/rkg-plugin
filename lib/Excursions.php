@@ -33,7 +33,14 @@ class Excursions implements InitInterface
         if ($post->post_type=='excursion')
         {
             //$actions['sendMail'] = '<a href="#" title="" rel="permalink">Duplicate</a>';
-            $actions['sendMail'] = $this->getEmails($post->ID);
+            $allEmails = $this->getEmails($post->ID);
+
+            $author = new Timber\User($post->post_author);
+            $sendToEmails = array_diff($allEmails, array($author->user_email));
+
+            $actions['sendMail'] = "<a href='mailto:".implode(';', $sendToEmails).
+            "'>Pošalji e-mail prijavljenima (".count($sendToEmails).")</a>";
+
             $actions['report'] = "<a href='"
                 .get_admin_url()
                 ."admin.php?page=excursion_report&post="
@@ -59,12 +66,11 @@ class Excursions implements InitInterface
         );
 
         foreach ($participants as $value) {
-            $user = new Timber\User($value[0]);
+            $user = new Timber\User($value);
             $emails[] = $user->user_email;
         }
 
-        return "<a href='mailto:".implode(',', $emails).
-            "'>Pošalji e-mail prijavljenima (".count($emails).")</a>";
+        return $emails;
     }
 
     public function addExcursionReport()
