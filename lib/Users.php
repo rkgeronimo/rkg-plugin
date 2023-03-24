@@ -203,6 +203,7 @@ class Users implements InitInterface
             "SELECT COUNT(*) FROM "
             .$tableName.
             " WHERE user_id = ".$user->ID
+            ." AND created > DATE_SUB(now(), INTERVAL 6 MONTH)"
         );
 
         $templates = array( 'userMeta.twig' );
