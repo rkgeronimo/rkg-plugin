@@ -650,6 +650,7 @@ class Activator
                 'publish_rkgPosts'        => true,
                 'edit_others_rkgPosts'     => true,
                 'edit_rkgPosts'            => true,
+                'manage_categories'        => true,
             )
         );
     }
