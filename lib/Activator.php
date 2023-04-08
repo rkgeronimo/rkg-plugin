@@ -651,6 +651,7 @@ class Activator
                 'edit_others_rkgPosts'     => true,
                 'edit_rkgPosts'            => true,
                 'manage_categories'        => true,
+                'edit_posts'              => true,
             )
         );
     }
