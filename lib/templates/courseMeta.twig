@@ -25,7 +25,12 @@
                     <select name="organiser" id="rkg_organiser">
                         <option id="instructor-none" value="" disabled{% if meta.organiser is empty %} selected{% endif %}>Instruktor</option>
                         {% for instructor in instructors %}
-                            <option value="{{ instructor.ID }}">{{ instructor.display_name }} - {{ instructor.rc }}</option>
+                            <option
+                                value="{{ instructor.ID }}"
+                                {%if meta.organiser == instructor.ID %} selected{% endif %}
+                            >
+                            {{ instructor.display_name }}
+                            </option>
                         {% endfor %}
                     </select>
                 {% else %}
