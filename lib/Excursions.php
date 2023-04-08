@@ -102,6 +102,25 @@ class Excursions implements InitInterface
             .$id
         );
 
+        // Get guests and related data
+
+        $context['guests'] = array();
+        $tableName = $wpdb->prefix."rkg_excursion_guest";
+        $guests = $wpdb->get_results(
+            "SELECT user_id, name, email, tel FROM "
+            .$tableName
+            ." WHERE post_id="
+            .$id
+            ." ORDER BY created"
+        );
+        foreach ($guests as $key => $value) {
+            $user      = new Timber\User($value->user_id);
+            $guests[$key]->invited_by =  $user->display_name;
+        }
+        $context['guests'] = $guests;
+
+        // Get excursion participants and related data
+
         $context['participants'] = array();
         $tableName = $wpdb->prefix."rkg_excursion_signup";
         $participants = $wpdb->get_col(
