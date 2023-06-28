@@ -79,7 +79,7 @@ class CourseStatus extends WP_List_Table
     public function get_columns()
     {
         $columns = array(
-            'rkg_name'     => 'Ime',
+            'rkg_name'     => 'Ime i prezime',
             'rkg_gsm'      => 'Mobitel',
             // 'questionaire' => 'Upitnik',
             'health'       => 'Zdravstvena izjava',
@@ -87,7 +87,7 @@ class CourseStatus extends WP_List_Table
             'brevet'       => 'Slika za brevet',
             'newbrevet'    => 'Novi broj breveta',
             'payed'        => 'Plaćeno',
-            'compleated'   => 'Završeno',
+            'completed'   => 'Završeno',
         );
 
         return $columns;
@@ -132,7 +132,7 @@ class CourseStatus extends WP_List_Table
             case 'brevet':
             case 'newbrevet':
             case 'payed':
-            case 'compleated':
+            case 'completed':
                 return $item[$column_name];
 
             default:
@@ -241,7 +241,7 @@ class CourseStatus extends WP_List_Table
                 $payed = $payed.' checked ';
             }
             $payed = $payed.'>';
-            $finished = '<input type="checkbox" name=finished"['.$value->user_id.']""';
+            $finished = '<input type="checkbox" name="finished['.$value->user_id.']"';
             if ($value->finished) {
                 $finished = $finished.' checked ';
             }
@@ -255,7 +255,7 @@ class CourseStatus extends WP_List_Table
                 'brevet'       => $brevet,
                 'newbrevet'    => $newBrevet,
                 'payed'        => $payed,
-                'compleated'   => $finished,
+                'completed'   => $finished,
             );
         }
 

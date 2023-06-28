@@ -351,7 +351,7 @@ class Courses implements InitInterface
             if ($context['request']->get['students']) {
                 $context['generate'] = true;
                 $studentsImp = implode(',', $context['request']->get['students']);
-                $and = " AND user_id IN ($studentsImp)";
+                $and = " AND user_id IN ($studentsImp) AND finished=true";
             }
 
             $tableName = $wpdb->prefix."rkg_course_signup";
@@ -371,6 +371,7 @@ class Courses implements InitInterface
                 .$id
             );
 
+            $context['students'] = [];
             foreach ($students as $value) {
                 $context['students'][] = new Timber\User($value);
             }
