@@ -74,6 +74,7 @@ class Users implements InitInterface
         $context                          = Timber::get_context();
         $context['profileMeta']['dob']    = get_user_meta($user->ID, "dob", true);
         $context['profileMeta']['pob']    = get_user_meta($user->ID, "pob", true);
+        $context['profileMeta']['address']= get_user_meta($user->ID, "address", true);
         $context['profileMeta']['oib']    = get_user_meta($user->ID, "oib", true);
         $context['profileMeta']['tel']    = get_user_meta($user->ID, "tel", true);
         $context['profileMeta']['brevet'] = get_user_meta($user->ID, "brevet", true);
