@@ -86,12 +86,18 @@ class CourseStatus extends WP_List_Table
             'liability'    => 'Izjava o odgovornosti',
             'brevet'       => 'Slika za brevet',
             'newbrevet'    => 'Novi broj breveta',
-            'weight'       => 'Težina (kg)',
-            'height'       => 'Visina (cm)',
-            'shoe_size'       => 'Veličina obuće',
             'payed'        => 'Plaćeno',
             'completed'   => 'Završeno',
         );
+
+        $additionalColumns = array(
+            'weight'       => 'Težina (kg)',
+            'height'       => 'Visina (cm)',
+            'shoe_size'       => 'Veličina obuće',
+        );
+        if (get_the_title($this->post) === "Početni ronilački tečaj") {
+            $columns = array_merge($columns, $additionalColumns);
+        }
 
         return $columns;
     }
