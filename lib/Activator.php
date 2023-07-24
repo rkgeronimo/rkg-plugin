@@ -117,6 +117,9 @@ class Activator
             new_card text NULL,
             payed BOOLEAN,
             finished BOOLEAN,
+            weight text NULL,
+            height text NULL,
+            shoe_size text NULL,
             created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
         ) $charsetCollate;";

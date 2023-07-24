@@ -86,6 +86,9 @@ class CourseStatus extends WP_List_Table
             'liability'    => 'Izjava o odgovornosti',
             'brevet'       => 'Slika za brevet',
             'newbrevet'    => 'Novi broj breveta',
+            'weight'       => 'Težina (kg)',
+            'height'       => 'Visina (cm)',
+            'shoe_size'       => 'Veličina obuće',
             'payed'        => 'Plaćeno',
             'completed'   => 'Završeno',
         );
@@ -131,6 +134,9 @@ class CourseStatus extends WP_List_Table
             case 'liability':
             case 'brevet':
             case 'newbrevet':
+            case 'weight':
+            case 'height':
+            case 'shoe_size':
             case 'payed':
             case 'completed':
                 return $item[$column_name];
@@ -254,6 +260,9 @@ class CourseStatus extends WP_List_Table
                 'liability'    => $liability,
                 'brevet'       => $brevet,
                 'newbrevet'    => $newBrevet,
+                'weight'       => $value->weight,
+                'height'       => $value->height,
+                'shoe_size'    => $value->shoe_size,
                 'payed'        => $payed,
                 'completed'   => $finished,
             );
