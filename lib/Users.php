@@ -67,15 +67,13 @@ class Users implements InitInterface
 
     public function updateUserName($userId)
     {
-        $user = new Timber\User($userId);
+        global $wpdb;
+        $user = get_userdata($userId);
         $name = sanitize_text_field($_POST['first_name']) . " " . sanitize_text_field($_POST['last_name']);
         $metaName = get_user_meta($userId, "display_name", true);
         if ($name != $user->display_name || $name != $metaName) {
             update_user_meta($userId, 'display_name', $name);
-            wp_update_user(array(
-                'ID' => $userId,
-                'display_name' => $name,
-            ));
+            $wpdb->update("wp_users", array('display_name' => $name), array('ID' => $userId));
         }
     }
 
