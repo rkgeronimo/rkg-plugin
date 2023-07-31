@@ -40,6 +40,8 @@ class Users implements InitInterface
         add_action('wp_ajax_health_survey', array($this, 'helthSurvey'));
         add_action('wp_ajax_nopriv_helth_survey', array($this, 'helthSurvey'));
 
+        add_action('personal_options_update', array($this, 'updateUserName'));
+
         add_action(
             'wp_ajax_responsibility_survey',
             array($this, 'responsibilitySurvey')
@@ -60,6 +62,15 @@ class Users implements InitInterface
 
         add_action('wp_ajax_guest_uninvite', array($this, 'guestUninvite'));
         add_action('wp_ajax_nopriv_guest_uninvite', array($this, 'guestUninvite'));
+    }
+
+    public function updateUserName($userId)
+    {
+        $user = new Timber\User($userId);
+        $name = sanitize_text_field($_POST['first_name']) . " " . sanitize_text_field($_POST['last_name']);
+        if ($name != $user->display_name) {
+            update_user_meta($userId, 'display_name', $name);
+        }
     }
 
     /**
