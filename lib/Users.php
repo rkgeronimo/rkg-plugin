@@ -41,6 +41,7 @@ class Users implements InitInterface
         add_action('wp_ajax_nopriv_helth_survey', array($this, 'helthSurvey'));
 
         add_action('personal_options_update', array($this, 'updateUserName'));
+        add_action('edit_user_profile_update', array($this, 'updateUserName'));
 
         add_action(
             'wp_ajax_responsibility_survey',
@@ -68,8 +69,13 @@ class Users implements InitInterface
     {
         $user = new Timber\User($userId);
         $name = sanitize_text_field($_POST['first_name']) . " " . sanitize_text_field($_POST['last_name']);
-        if ($name != $user->display_name) {
+        $metaName = get_user_meta($userId, "display_name", true);
+        if ($name != $user->display_name || $name != $metaName) {
             update_user_meta($userId, 'display_name', $name);
+            wp_update_user(array(
+                'ID' => $userId,
+                'display_name' => $name,
+            ));
         }
     }
 
