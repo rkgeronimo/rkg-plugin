@@ -76,7 +76,7 @@ class UserData
     {
         $specialities = array();
         if ($this->userMeta['co'][0]) {
-            $specialities[] = 'Kompresionist';
+            $specialities[] = 'Kompresorist';
         }
         if ($this->userMeta['nitrox'][0]) {
             $specialities[] = 'NITROX';
