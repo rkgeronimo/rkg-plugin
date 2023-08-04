@@ -40,8 +40,7 @@ class Users implements InitInterface
         add_action('wp_ajax_health_survey', array($this, 'helthSurvey'));
         add_action('wp_ajax_nopriv_helth_survey', array($this, 'helthSurvey'));
 
-        add_action('personal_options_update', array($this, 'updateUserName'));
-        add_action('edit_user_profile_update', array($this, 'updateUserName'));
+        add_action('profile_update', array($this, 'updateUserName'));
 
         add_action(
             'wp_ajax_responsibility_survey',
@@ -72,8 +71,13 @@ class Users implements InitInterface
         $name = sanitize_text_field($_POST['first_name']) . " " . sanitize_text_field($_POST['last_name']);
         $metaName = get_user_meta($userId, "display_name", true);
         if ($name != $user->display_name || $name != $metaName) {
-            update_user_meta($userId, 'display_name', $name);
-            $wpdb->update("wp_users", array('display_name' => $name), array('ID' => $userId));
+            // update_user_meta($userId, 'display_name', $name);
+            $tableName = $wpdb->prefix."users";
+            $sql = $wpdb->prepare(
+                "UPDATE $tableName SET display_name = %s WHERE id = %d",
+                $name, $userId
+            );
+            $wpdb->query($sql);
         }
     }
 
