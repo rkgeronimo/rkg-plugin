@@ -254,6 +254,7 @@ class Users implements InitInterface
     {
         $this->updateMetaValue($userId, 'dob');
         $this->updateMetaValue($userId, 'pob');
+        $this->updateMetaValue($userId, 'address');
         $this->updateMetaValue($userId, 'oib');
         $this->updateMetaValue($userId, 'tel');
         $this->updateMetaValue($userId, 'suit_size');
