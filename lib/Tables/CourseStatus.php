@@ -87,7 +87,6 @@ class CourseStatus extends WP_List_Table
             'brevet'       => 'Slika za brevet',
             'newbrevet'    => 'Novi broj breveta',
             'payed'        => 'Plaćeno',
-            'completed'   => 'Završeno',
         );
 
         $additionalColumns = array(
@@ -144,7 +143,6 @@ class CourseStatus extends WP_List_Table
             case 'height':
             case 'shoe_size':
             case 'payed':
-            case 'completed':
                 return $item[$column_name];
 
             default:
@@ -172,9 +170,6 @@ class CourseStatus extends WP_List_Table
         );
 
         foreach ($participants as $value) {
-            // $user = new Timber\User($value->user_id);
-            // $user->payed = $value->payed;
-            // $user->finished = $value->finished;
             $user     = get_userdata($value->user_id);
             $userData = new UserData($value->user_id);
             $templates = array('CourseStatus.twig');
@@ -253,11 +248,6 @@ class CourseStatus extends WP_List_Table
                 $payed = $payed.' checked ';
             }
             $payed = $payed.'>';
-            $finished = '<input type="checkbox" name="finished['.$value->user_id.']"';
-            if ($value->finished) {
-                $finished = $finished.' checked ';
-            }
-            $finished = $finished.'>';
             $data[] = array(
                 'rkg_name'           => $user->data->display_name,
                 'rkg_gsm'            => $userData->showData('tel'),
@@ -270,7 +260,6 @@ class CourseStatus extends WP_List_Table
                 'height'       => $value->height,
                 'shoe_size'    => $value->shoe_size,
                 'payed'        => $payed,
-                'completed'   => $finished,
             );
         }
 

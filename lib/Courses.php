@@ -188,22 +188,17 @@ class Courses implements InitInterface
         foreach ($participants as $value) {
             $user = new Timber\User($value->user_id);
             $user->payed = $value->payed;
-            $user->finished = $value->finished;
             if ($context['request']->post) {
                 $payed = 0;
                 if ($context['request']->post['payed'][$value->user_id]) {
                     $payed = 1;
                 }
-                $finished = 0;
-                if ($context['request']->post['finished'][$value->user_id]) {
-                    $finished = 1;
-                }
+                // Update course data
                 $wpdb->update(
                     $tableName,
                     array(
                         'new_card' => $context['request']->post['new_card'][$value->user_id],
                         'payed' => $payed,
-                        'finished' => $finished,
                     ),
                     array(
                         'course_id' => $id,
@@ -211,7 +206,8 @@ class Courses implements InitInterface
                     )
                 );
                 $user->payed = $payed;
-                $user->finished = $finised;
+                // Update user data with new card number
+                update_user_meta($value->user_id, 'cardNumber', $context['request']->post['new_card'][$value->user_id]);
             }
 
             $context['participants'][] = $user;
@@ -351,7 +347,7 @@ class Courses implements InitInterface
             if ($context['request']->get['students']) {
                 $context['generate'] = true;
                 $studentsImp = implode(',', $context['request']->get['students']);
-                $and = " AND user_id IN ($studentsImp) AND finished=true";
+                $and = " AND user_id IN ($studentsImp)";
             }
 
             $tableName = $wpdb->prefix."rkg_course_signup";
