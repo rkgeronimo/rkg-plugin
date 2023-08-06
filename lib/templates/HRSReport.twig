@@ -83,25 +83,24 @@
                         (ime, prezime i inst. broj)
                     </td>
                     <td>
-                        DELEGAT HRS-a<br />
-                        (samo za R3 i I1)
+                        DATUM<br />
                     </td>
                 </tr>
                 <tr class="hrs-bold">
                     <td contenteditable="true">
-                        r.k. Geronimo
+                        RK Geronimo
                     </td>
                     <td contenteditable="true">
                         {{ metaTemplate.finish_categorie }}
                     </td>
                     <td contenteditable="true">
-                        {{ organiser.display_name }}
+                        {{ organiser.display_name }}, {{ organiser.cardNumber }}
                     </td>
                     <td contenteditable="true">
-                        {{ assistant.display_name }}
+                        {{ assistant.display_name }}, {{ organiser.cardNumber }}
                     </td>
                     <td contenteditable="true">
-                        {{ meta.delegate }}
+                        {{ meta.exam|date('j.n.Y.') }}
                     </td>
                 </tr>
                 <tr>
@@ -112,15 +111,15 @@
                         DATUM POČETKA
                     </td>
                     <td>
-                        DATUM ISPITA
+                        DATUM ZAVRŠETKA
                     </td>
                     <td>
                         TEČAJU PRISTUPILO
-                        (broj tečajaca)
+                        (broj osoba)
                     </td>
                     <td>
                         TEČAJ POLOŽILO
-                        (broj tečajaca)
+                        (broj osoba)
                     </td>
                 </tr>
                 <tr class="hrs-bold">
@@ -131,7 +130,7 @@
                         {{ meta.starttime|date('j.n.Y.') }}
                     </td>
                     <td contenteditable="true">
-                        {{ meta.exam|date('j.n.Y.') }}
+                        {{ meta.endtime|date('j.n.Y.') }}
                     </td>
                     <td contenteditable="true">
                         {{ totalStudents }}
@@ -150,18 +149,17 @@
                         IME I PREZIME
                     </td>
                     <td>
-                        TELEFON ZA KONTAKT
+                        ADRESA STANOVANJA
+                    </td>
+                    <td>
+                        TELEFON
                     </td>
                     <td>
                         MJESTO I DATUM ROĐENJA
                     </td>
                     <td>
-                        BROJ BREVETA KOJI POSJEDUJE<br />
-                        (osim za tečaj R1)
-                    </td>
-                    <td>
-                        BROJ NOVOG BREVETA<BR />
-                        (novi zadužni broj u HRS-u)
+                        REG. BROJ - HRS<br />
+                        (broj breveta)
                     </td>
                 </tr>
                 {% for k in 1..10 %}
@@ -173,6 +171,9 @@
                             {{ students[l].display_name }}
                         </td>
                         <td contenteditable="true">
+                            {{ students[l].address }}
+                        </td>
+                        <td contenteditable="true">
                             {{ students[l].tel }}
                         </td>
                         <td contenteditable="true">
@@ -180,9 +181,6 @@
                         </td>
                         <td contenteditable="true">
                             {{ students[l].cardNumber }}
-                        </td>
-                        <td contenteditable="true">
-                            {{ students[l].signup.new_card }}
                         </td>
                     </tr>
                     {% set l=l+1 %}
@@ -194,13 +192,13 @@
                         POTPIS I PEČAT
                     </td>
                     <td>
-                        INSTRUKTORA
+                        INSTRUKTOR
                     </td>
                     <td>
-                        ASISTENTA
+                        ASISTENT
                     </td>
                     <td>
-                        DELEGATA (samo za tečaj R3, I1)
+                        DELEGAT (samo za tečaj R3, I1)
                     </td>
                 </tr>
                 <tr>
