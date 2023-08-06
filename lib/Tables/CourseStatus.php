@@ -80,6 +80,7 @@ class CourseStatus extends WP_List_Table
     {
         $columns = array(
             'rkg_name'     => 'Ime i prezime',
+            'email'        => 'Email',
             'rkg_gsm'      => 'Mobitel',
             // 'questionaire' => 'Upitnik',
             'health'       => 'Zdravstvena izjava',
@@ -135,6 +136,7 @@ class CourseStatus extends WP_List_Table
             case 'rkg_name':
             case 'rkg_gsm':
             // case 'questionaire':
+            case 'email':
             case 'health':
             case 'liability':
             case 'brevet':
@@ -236,7 +238,7 @@ class CourseStatus extends WP_List_Table
             }
 
             $brevet = "&nbsp;";
-            if ($userData->userMeta['brevet']) {
+            if (isset($userData->userMeta['brevet']) && $userData->userMeta['brevet']) {
                 $brevet = "<img src='".$userData->userMeta['brevet'][0]."' style='max-width: 100%' />";
             }
             $newBrevet = '<input type="text" style="width: 90%" '
@@ -250,6 +252,7 @@ class CourseStatus extends WP_List_Table
             $payed = $payed.'>';
             $data[] = array(
                 'rkg_name'           => $user->data->display_name,
+                'email'           => $user->data->user_email,
                 'rkg_gsm'            => $userData->showData('tel'),
                 // 'questionaire' => 'Upitnik',
                 'health'       => $medical,
@@ -274,7 +277,7 @@ class CourseStatus extends WP_List_Table
      *
      * @return int
      */
-    private function sort_data($aIn, $bIn)
+    private function sort_data($a, $b)
     {
         if ($a === $b) {
             return 0;
