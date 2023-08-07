@@ -172,22 +172,30 @@ class Courses implements InitInterface
             .get_admin_url()
             ."admin.php?page=course_medical&post="
             .$id
-            ."'>Zdravstvene izjave</a>";
+            ."'>Sve zdravstvene izjave</a>";
 
         $context['allLiability'] = "<a href='"
             .get_admin_url()
             ."admin.php?page=course_liability&post="
             .$id
-            ."'>Izjave o odgovornosti</a>";
+            ."'>Sve izjave o odgovornosti</a>";
         $context['allBrevet'] = "<a href='"
             .get_admin_url()
             ."admin.php?page=course_brevet_zip&post="
             .$id
-            ."'>Preuzimanje breveta zip</a>";
+            ."'>Preuzimanje svih breveta</a>";
+        $context['hrsReport'] = "<a href='"
+            .get_admin_url()
+            ."admin.php?page=course_report_hrs&post="
+            .$id
+            ."'>Izvještaj HRS-a</a>";
+
+        $participantsEmails = array();
         $tableName = $wpdb->prefix."rkg_course_signup";
         foreach ($participants as $value) {
             $user = new Timber\User($value->user_id);
             $user->payed = $value->payed;
+            array_push($participantsEmails, $user->user_email);
             if ($context['request']->post) {
                 $payed = 0;
                 if ($context['request']->post['payed'][$value->user_id]) {
@@ -217,6 +225,9 @@ class Courses implements InitInterface
         $courseStatusTable->prepare_items();
 
         $context['table'] = $courseStatusTable;
+
+        $context['sendEmails'] = "<a href='mailto:".implode(';', $participantsEmails).
+        "'>Pošalji e-mail prijavljenima (".count($participantsEmails).")</a>";
 
         $templates = array( 'courseReport.twig' );
         Timber::render($templates, $context);
@@ -448,7 +459,7 @@ class Courses implements InitInterface
             $brevet = array();
             foreach ($participants as $value) {
                 $userData = new UserData($value->user_id);
-                if ($userData->userMeta['brevet']) {
+                if (isset($userData->userMeta['brevet']) && $userData->userMeta['brevet']) {
                     $brevet[] = array(
                         'file' => $userData->userMeta['brevet'][0],
                         'user' => $userData->userMeta['first_name'][0].'_'
@@ -456,10 +467,13 @@ class Courses implements InitInterface
                     );
                 }
             }
-            $zip = new ZipArchive();
 
-            $tmpFile = tempnam('.', '');
-            $zip->open($tmpFile, ZipArchive::CREATE);
+            $uploadDir = wp_upload_dir()['path'];
+            $tmpFile = wp_tempnam(uniqid(), $uploadDir);
+            $zip = new ZipArchive();
+            if($zip->open($tmpFile, ZipArchive::CREATE) !== TRUE ) {
+                exit("cannot open <$tmpFile>\n");
+            }
 
             foreach ($brevet as $file) {
                 $ext = pathinfo($file['file'], PATHINFO_EXTENSION);
@@ -471,10 +485,14 @@ class Courses implements InitInterface
 
             $zip->close();
 
-            header('Content-disposition: attachment; filename=download.zip');
-            header('Content-type: application/zip');
-            readfile($tmpFile);
-            exit;
+            if (file_exists($tmpFile)) {
+                header('Content-disposition: attachment; filename=breveti.zip');
+                header('Content-type: application/zip');
+                header('Content-Length: ' . filesize($tmpFile));
+                readfile($tmpFile);
+                exit;
+            }
+            exit("Error ocurred. Are there any photos?");
         });
     }
 

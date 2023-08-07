@@ -48,14 +48,18 @@
                         <input name="completed" type="checkbox" {{ meta.completed ? 'checked' }} />
                     </td>
                 </tr>
-                <tr>
+                <tr class="links-table">
+                    <td>{{ sendEmails }}</td>
+                </tr>
+                <tr><td></td></tr>
+                
+                <tr class="links-table">
                     <td>{{ allMedical }}</td>
                     <td>{{ allLiability }}</td>
-                </tr>
-                <tr>
                     <td>{{ allBrevet }}</td>
-                    <td></td>
+                    <td><b>{{ hrsReport }}</b></td>
                 </tr>
+                
             </table>
             {{ table.display }}
         <input type="submit" value="spremi">
