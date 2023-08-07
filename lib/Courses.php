@@ -541,17 +541,11 @@ class Courses implements InitInterface
     {
         if ($post->post_type=='course')
         {
-            $actions['sendMail'] = $this->getEmails($post->ID);
             $actions['report'] = "<a href='"
                 .get_admin_url()
                 ."admin.php?page=course_report&post="
                 .$post->ID
                 ."'>Status tečaja</a>";
-            $actions['reportHrs'] = "<a href='"
-                .get_admin_url()
-                ."admin.php?page=course_report_hrs&post="
-                .$post->ID
-                ."'>Izvještaj HRS</a>";
         }
         unset($actions['trash']);
 
