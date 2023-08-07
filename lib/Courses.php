@@ -421,7 +421,11 @@ class Courses implements InitInterface
                 $where .= " AND user_id=".$context['request']->get['user'];
             }
 
-            $templates = array( 'HRSReport.twig' );
+            $templates = array( 'HRSReportSpecialty.twig' );
+            if (in_array($context['metaTemplate']->finish_categorie, array('R0', 'R1', 'R2', 'R3', 'I1'))) {
+                $templates = array( 'HRSReport.twig' );
+            }
+            
             Timber::render($templates, $context);
             exit;
         });
