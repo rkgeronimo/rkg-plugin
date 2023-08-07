@@ -83,7 +83,8 @@
                         (ime, prezime i inst. broj)
                     </td>
                     <td>
-                        DATUM<br />
+                        DELEGAT HRS-a<br />
+                        (samo za R3 i I1)
                     </td>
                 </tr>
                 <tr class="hrs-bold">
@@ -100,7 +101,7 @@
                         {{ assistant.display_name }}, {{ assistant.cardNumber }}
                     </td>
                     <td contenteditable="true">
-                        {{ meta.exam|date('j.n.Y.') }}
+                        {{ meta.delegate }}
                     </td>
                 </tr>
                 <tr>
@@ -111,7 +112,7 @@
                         DATUM POČETKA
                     </td>
                     <td>
-                        DATUM ZAVRŠETKA
+                        DATUM ISPITA
                     </td>
                     <td>
                         TEČAJU PRISTUPILO
@@ -130,7 +131,7 @@
                         {{ meta.starttime|date('j.n.Y.') }}
                     </td>
                     <td contenteditable="true">
-                        {{ meta.endtime|date('j.n.Y.') }}
+                        {{ meta.exam|date('j.n.Y.') }}
                     </td>
                     <td contenteditable="true">
                         {{ totalStudents }}
@@ -149,17 +150,18 @@
                         IME I PREZIME
                     </td>
                     <td>
-                        ADRESA STANOVANJA
-                    </td>
-                    <td>
-                        TELEFON
+                        TELEFON ZA KONTAKT
                     </td>
                     <td>
                         MJESTO I DATUM ROĐENJA
                     </td>
                     <td>
-                        REG. BROJ - HRS<br />
-                        (broj breveta)
+                        BROJ BREVETA KOJI POSJEDUJE<br />
+                        (osim za tečaj R1)
+                    </td>
+                    <td>
+                        BROJ NOVOG BREVETA<BR />
+                        (novi zadužni broj u HRS-u)
                     </td>
                 </tr>
                 {% for k in 1..10 %}
@@ -171,9 +173,6 @@
                             {{ students[l].display_name }}
                         </td>
                         <td contenteditable="true">
-                            {{ students[l].address }}
-                        </td>
-                        <td contenteditable="true">
                             {{ students[l].tel }}
                         </td>
                         <td contenteditable="true">
@@ -181,6 +180,9 @@
                         </td>
                         <td contenteditable="true">
                             {{ students[l].cardNumber }}
+                        </td>
+                        <td contenteditable="true">
+                            {{ students[l].signup.new_card }}
                         </td>
                     </tr>
                     {% set l=l+1 %}
