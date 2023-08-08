@@ -91,6 +91,7 @@ class Users implements InitInterface
     public function userMeta($user)
     {
         $context                          = Timber::get_context();
+        $context['profileMeta']['memberNumber']    = get_user_meta($user->ID, "memberNumber", true);
         $context['profileMeta']['dob']    = get_user_meta($user->ID, "dob", true);
         $context['profileMeta']['pob']    = get_user_meta($user->ID, "pob", true);
         $context['profileMeta']['address']= get_user_meta($user->ID, "address", true);
@@ -252,6 +253,9 @@ class Users implements InitInterface
      */
     public function userMetaUpdate($userId, $invert = true)
     {
+        if (current_user_can('edit_users')) {
+            $this->updateMetaValue($userId, 'memberNumber');
+        }
         $this->updateMetaValue($userId, 'dob');
         $this->updateMetaValue($userId, 'pob');
         $this->updateMetaValue($userId, 'address');

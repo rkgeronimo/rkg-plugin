@@ -1,5 +1,11 @@
 {% block content %}
     <table class="form-table">
+        {% if user.can('edit_users') %}
+        <tr>
+            <th><label for="memberNumber">Članski broj</label></th>
+            <td><input name="memberNumber" value="{{ profileMeta.memberNumber }}"></td>
+        </tr>
+        {% endif %}
         <tr>
             <th><label for="dob">Datum rođenja</label></th>
             <td><input type="date" name="dob" value="{{ profileMeta.dob }}"></td>
