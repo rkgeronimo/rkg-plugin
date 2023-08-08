@@ -1,6 +1,7 @@
 <html style="margin-top: 0 !important">
     <head>
-    {{function('wp_head')}}
+        {{function('wp_head')}}
+        {{ function('wp_footer') }}
     </head>
     <body>
         {% set i = ((students|length)/10)|round(0, 'floor') %}
@@ -221,7 +222,7 @@
         </div>
         {% endfor %}
         {% else %}
-        <form method="get">
+        <form method="get" id="generate-report" style="margin-left: 1em">
             <p>Prikaži izvještaj za sljedeće tečajce:</p>
             <input type="hidden" name="page" value="course_report_hrs" />
             <input type="hidden" name="post" value="{{ post.id }}" />
@@ -237,6 +238,8 @@
                     </tr>
                 {% endfor %}
             </table>
+            <img id="HRS-loader" style="display: none;" src="{{ site.theme.link }}/assets/img/HRS-culjak.jpeg" />
+            <br />
             <input type="submit" value="generiraj" />
         </form>
         {% endif %}
