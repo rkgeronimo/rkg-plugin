@@ -2,6 +2,7 @@
 namespace RKGeronimo;
 
 use RKGeronimo\Interfaces\InitInterface;
+use RKGeronimo\Helpers\OIB;
 use Timber;
 
 /**
@@ -15,6 +16,8 @@ use Timber;
  */
 class Users implements InitInterface
 {
+    private $validationErrors;
+
     /**
      * init
      *
@@ -33,6 +36,8 @@ class Users implements InitInterface
 
         add_action('personal_options_update', array($this, 'instructorMetaUpdate'));
         add_action('edit_user_profile_update', array($this, 'instructorMetaUpdate'));
+
+        add_action('user_profile_update_errors', array($this, 'validateUserInputs'), 10, 3);
 
         add_action('wp_ajax_brevet_upload', array($this, 'brevetUpload'));
         add_action('wp_ajax_nopriv_brevet_upload', array($this, 'brevetUpload'));
@@ -66,6 +71,11 @@ class Users implements InitInterface
 
     public function updateUserName($userId)
     {
+        if (!isset($_POST['first_name']) && !isset($_POST['last_name'])) {
+            // Not updating profile with user data, maybe a password change? skip.
+            return;
+        }
+
         global $wpdb;
         $user = get_userdata($userId);
         $name = sanitize_text_field($_POST['first_name']) . " " . sanitize_text_field($_POST['last_name']);
@@ -690,6 +700,12 @@ class Users implements InitInterface
         }
     }
 
+    public function validateUserInputs($errors, $isExistingUser, $user) {
+        foreach($this->validationErrors as $key => $value) {
+            $errors->add($key, $value);
+        }
+    }
+
     /**
      * updateMetaValue
      *
@@ -703,13 +719,28 @@ class Users implements InitInterface
      */
     private function updateMetaValue($userId, $meta, $value = null)
     {
+        $data = $value ? $value : $_POST[$meta];
+        if (!$this->isValidInput($meta, $data)) {
+            return;
+        }
+
         if (!empty($_POST[$meta]) || !empty($value)) {
             $value = $value ? $value : $_POST[$meta];
             update_user_meta($userId, $meta, $value);
-
             return;
         }
         delete_user_meta($userId, $meta);
+    }
+
+    private function isValidInput($meta, $value = null) {
+        if ($meta === 'oib') {
+            $isValid = OIB::validate($value);
+            if (!$isValid) {
+                $this->validationErrors['oib_error'] = __('Nevažeći OIB.');
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
