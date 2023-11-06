@@ -551,8 +551,8 @@ class RKGeronimoExcursion
 
         if (!empty($context['request']->post['godina'])
             || !empty($context['request']->post['naziv'])
-            || !empty($context['request']->post{'organizator'})
-            || !empty($context['request']->post{'prijavljeni'})
+            || !empty($context['request']->post['organizator'])
+            || !empty($context['request']->post['prijavljeni'])
         ) {
             $where = array();
             if (!empty($context['request']->post['godina'])) {

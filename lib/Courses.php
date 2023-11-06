@@ -215,7 +215,9 @@ class Courses implements InitInterface
                 );
                 $user->payed = $payed;
                 // Update user data with new card number
-                update_user_meta($value->user_id, 'cardNumber', $context['request']->post['new_card'][$value->user_id]);
+                if ($context['request']->post['new_card'][$value->user_id]) {
+                    update_user_meta($value->user_id, 'cardNumber', $context['request']->post['new_card'][$value->user_id]);
+                }
             }
 
             $context['participants'][] = $user;
