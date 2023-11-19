@@ -95,7 +95,11 @@ class CourseStatus extends WP_List_Table
             'height'       => 'Visina (cm)',
             'shoe_size'       => 'Veličina obuće',
         );
-        if (get_the_title($this->post) === "Početni ronilački tečaj") {
+
+        $courseName = get_the_title($this->post);
+        if (stripos($courseName, "Početni ronilački tečaj") !== false
+            || stripos($courseName, "R1") !== false)
+        {
             $columns = array_merge($columns, $additionalColumns);
         }
 

@@ -136,6 +136,7 @@ class Courses implements InitInterface
 
         $tableName      = $wpdb->prefix."rkg_course_meta";
         if ($context['request']->post) {
+            // TODO: Remove locked & completed
             $locked = 0;
             if ($context['request']->post['locked']) {
                 $locked = 1;
