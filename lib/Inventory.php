@@ -350,9 +350,21 @@ class Inventory implements InitInterface
 
         $context['masks']['items'] = $this->getAvailableInventory('mask');
 
+        // Get members/users
         $context['userList'] = get_users(array(
             'role'    => 'member',
         ));
+        // Expand list of users with course attendees (non-members)
+        $courseAttendees = $wpdb->get_results("
+            SELECT user_id from wp_rkg_course_signup
+            LEFT JOIN wp_rkg_course_meta meta ON course_id = meta.id
+            LEFT JOIN wp_posts posts ON posts.id = meta.id
+            WHERE endtime >= ".date("'Y-m-d'")
+            . ' AND post_title LIKE "%R1%"'
+        );
+        foreach ($courseAttendees as $attendee) {
+           array_push($context['userList'], get_user_by("id", $attendee->user_id));
+        }
 
         $templates = array( 'inventoryReservationsNew.twig' );
         Timber::render($templates, $context);
