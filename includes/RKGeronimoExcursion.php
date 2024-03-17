@@ -261,18 +261,21 @@ class RKGeronimoExcursion
                 $this->post['endtime'],
                 $this->post['deadline']
             );
-            $this->wpdb->query($sql);
+            $result = $this->wpdb->query($sql);
 
-            if (!empty($this->post['post_ID'])) {
+            // When creating new excursion, add organizer
+            if ($result) {
                 $tableName   = $this->wpdb->prefix."rkg_excursion_signup";
                 $sql = $this->wpdb->prepare(
                     "INSERT IGNORE INTO $tableName (post_id, user_id) ".
                     "VALUES (%s, %s) ",
                     $this->post['post_ID'],
-                    $this->post['user_ID']
+                    $this->post['post_author']
                 );
                 $this->wpdb->query($sql);
             }
+
+            // Add predprijave
 
             $tableName = $this->wpdb->prefix."rkg_excursion_signup";
             if ($this->post['pr1']) {
