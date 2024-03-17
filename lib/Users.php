@@ -25,6 +25,8 @@ class Users implements InitInterface
      */
     public function init()
     {
+        add_action('admin_menu', array($this, 'createMemberRegistry'));
+        
         add_action('show_user_profile', array($this, 'userMeta'));
         add_action('edit_user_profile', array($this, 'userMeta'));
 
@@ -67,6 +69,20 @@ class Users implements InitInterface
 
         add_action('wp_ajax_guest_uninvite', array($this, 'guestUninvite'));
         add_action('wp_ajax_nopriv_guest_uninvite', array($this, 'guestUninvite'));
+    }
+
+    public function createMemberRegistry()
+    {
+        add_users_page(
+            'Registar članova',
+            'Registar članova',
+            'edit_users',
+            'member_registry',
+            array(
+                $this,
+                'memberRegistryPage'
+            )
+        );
     }
 
     public function updateUserName($userId)
@@ -704,6 +720,46 @@ class Users implements InitInterface
         foreach($this->validationErrors as $key => $value) {
             $errors->add($key, $value);
         }
+    }
+
+    public function memberRegistryPage()
+    {
+        $context            = Timber::get_context();
+        if(!current_user_can('edit_users')) {
+            Timber::render('single-no-pasaran.twig', $context);
+        }
+
+        global $wpdb;
+        $tableName = $wpdb->prefix."rkg_member_subscription";
+        $allMemberIds = $wpdb->get_results(
+            "SELECT DISTINCT user FROM "
+            .$tableName
+        );
+        $allMemberIds = array_map(function($item) { return $item->user; }, $allMemberIds);
+        $users = get_users(['include' => $allMemberIds]);
+        foreach($users as $index => $user){
+            $users[$index]->memberNumber    = get_user_meta($user->ID, "memberNumber", true);
+            $users[$index]->dob             = get_user_meta($user->ID, "dob", true);
+            $users[$index]->oib             = get_user_meta($user->ID, "oib", true);
+            
+            
+            $subscriptions = $wpdb->get_results(
+                "SELECT year, created FROM "
+                .$tableName
+                ." WHERE user = ".$user->ID
+                ." ORDER BY year ASC"
+            );
+            if (count($subscriptions) > 0) {
+                $users[$index]->firstYear = $subscriptions[0]->created;
+                $users[$index]->lastYear = $subscriptions[count($subscriptions)-1]->year;
+                $users[$index]->allYears = $subscriptions;
+            }
+        }
+
+        $context['data'] = $users;
+
+        $templates = array( 'memberRegistry.twig' );
+        Timber::render($templates, $context);        
     }
 
     /**

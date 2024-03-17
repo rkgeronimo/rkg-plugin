@@ -647,6 +647,7 @@ class Courses implements InitInterface
 
     public function courseInterestPage()
     {
+        $context            = Timber::get_context();
         if(!current_user_can('edit_course')) {
             Timber::render('single-no-pasaran.twig', $context);
         }
@@ -654,7 +655,6 @@ class Courses implements InitInterface
         $tableName          = $this->wpdb->prefix."rkg_course_interest";
         $userTable          = $this->wpdb->prefix."users";
         $courseTable                  = $this->wpdb->prefix."rkg_course_template";
-        $context            = Timber::get_context();
 
         $context['data'] = $this->wpdb->get_results(
             "SELECT i.id, u.display_name, u.user_email, c.name as course_name, i.created"
