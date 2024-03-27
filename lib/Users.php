@@ -625,7 +625,6 @@ class Users implements InitInterface
     {
 
         $currentUser = wp_get_current_user();
-        $this->userMetaUpdate($currentUser->ID, true);
 
         global $wpdb;
         $tableName = $wpdb->prefix."rkg_excursion_guest";
