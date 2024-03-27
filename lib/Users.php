@@ -525,7 +525,22 @@ class Users implements InitInterface
     {
 
         $currentUser = wp_get_current_user();
-        $this->userMetaUpdate($currentUser->ID, true);
+        $userId = $currentUser->ID;
+        // Update only gear things from profile
+        $this->updateMetaValue($userId, 'suit_size');
+        $this->updateMetaValue($userId, 'boots_size');
+        $this->updateMetaValue($userId, 'gloves_size');
+        $this->updateMetaValue($userId, 'fins_size');
+        $this->updateMetaValue($userId, 'bcd_size');
+        $this->updateMetaValue($userId, 'lead_size');
+        $this->updateMetaValueCheckbox($userId, 'mask', true);
+        $this->updateMetaValueCheckbox($userId, 'regulator', true);
+        $this->updateMetaValueCheckbox($userId, 'suit', true);
+        $this->updateMetaValueCheckbox($userId, 'boots', true);
+        $this->updateMetaValueCheckbox($userId, 'gloves', true);
+        $this->updateMetaValueCheckbox($userId, 'fins', true);
+        $this->updateMetaValueCheckbox($userId, 'bcd', true);
+        $this->updateMetaValueCheckbox($userId, 'lead', true);
 
         global $wpdb;
         $tableName = $wpdb->prefix."rkg_excursion_gear";
