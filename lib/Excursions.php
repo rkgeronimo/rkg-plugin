@@ -35,8 +35,8 @@ class Excursions implements InitInterface
             //$actions['sendMail'] = '<a href="#" title="" rel="permalink">Duplicate</a>';
             $allEmails = $this->getEmails($post->ID);
 
-            $author = new Timber\User($post->post_author);
-            $sendToEmails = array_diff($allEmails, array($author->user_email));
+            $currentUser = wp_get_current_user();
+            $sendToEmails = array_diff($allEmails, array($currentUser->user_email));
 
             $actions['sendMail'] = "<a href='mailto:".implode(';', $sendToEmails).
             "'>Pošalji e-mail prijavljenima (".count($sendToEmails).")</a>";
