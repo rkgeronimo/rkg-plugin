@@ -272,7 +272,7 @@ class RKGeronimoExcursion
                     "INSERT IGNORE INTO $tableName (post_id, user_id) ".
                     "VALUES (%s, %s) ",
                     $this->post['post_ID'],
-                    $this->post['post_author']
+                    $this->post['post_author_override'] // safer to use in case admin has put organizer as someone else
                 );
                 $result = $this->wpdb->query($sql);
                 if ($result > 0) {
