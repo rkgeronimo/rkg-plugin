@@ -589,7 +589,6 @@ class Users implements InitInterface
         }
                 
         $currentUser = wp_get_current_user();
-        $this->userMetaUpdate($currentUser->ID, true);
 
         $tableName = $wpdb->prefix."rkg_excursion_guest";
         $result = $wpdb->replace(
