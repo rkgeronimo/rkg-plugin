@@ -263,6 +263,8 @@ class RKGeronimoExcursion
             );
             $result = $this->wpdb->query($sql);
 
+            $metaTableName = $this->wpdb->prefix."rkg_excursion_meta";
+
             // When creating new excursion, add organizer
             if ($result) {
                 $tableName   = $this->wpdb->prefix."rkg_excursion_signup";
@@ -272,7 +274,10 @@ class RKGeronimoExcursion
                     $this->post['post_ID'],
                     $this->post['post_author']
                 );
-                $this->wpdb->query($sql);
+                $result = $this->wpdb->query($sql);
+                if ($result > 0) {
+                    $this->wpdb->query("UPDATE $metaTableName SET registered = registered + 1 WHERE id = {$this->post['post_ID']};");
+                }
             }
 
             // Add predprijave
@@ -285,34 +290,46 @@ class RKGeronimoExcursion
                     $this->post['pr1'],
                     $this->post['post_ID']
                 );
-                $this->wpdb->query($sql);
+                $result = $this->wpdb->query($sql);
+                if ($result > 0) {
+                    $this->wpdb->query("UPDATE $metaTableName SET registered = registered + 1 WHERE id = {$this->post['post_ID']};");
+                }
             }
             if ($this->post['pr2']) {
                 $sql = $this->wpdb->prepare(
-                    "INSERT IGNORE INTO $tableName (user_id, post_id) ".
+                    "INSERT INTO $tableName (user_id, post_id) ".
                     "VALUES (%s, %s) ",
                     $this->post['pr2'],
                     $this->post['post_ID']
                 );
-                $this->wpdb->query($sql);
+                $result = $this->wpdb->query($sql);
+                if ($result > 0) {
+                    $this->wpdb->query("UPDATE $metaTableName SET registered = registered + 1 WHERE id = {$this->post['post_ID']};");
+                }            
             }
             if ($this->post['pr3']) {
                 $sql = $this->wpdb->prepare(
-                    "INSERT IGNORE INTO $tableName (user_id, post_id) ".
+                    "INSERT INTO $tableName (user_id, post_id) ".
                     "VALUES (%s, %s) ",
                     $this->post['pr3'],
                     $this->post['post_ID']
                 );
-                $this->wpdb->query($sql);
+                $result = $this->wpdb->query($sql);
+                if ($result > 0) {
+                    $this->wpdb->query("UPDATE $metaTableName SET registered = registered + 1 WHERE id = {$this->post['post_ID']};");
+                }            
             }
             if ($this->post['pr4']) {
                 $sql = $this->wpdb->prepare(
-                    "INSERT IGNORE INTO $tableName (user_id, post_id) ".
+                    "INSERT INTO $tableName (user_id, post_id) ".
                     "VALUES (%s, %s) ",
                     $this->post['pr4'],
                     $this->post['post_ID']
                 );
-                $this->wpdb->query($sql);
+                $result = $this->wpdb->query($sql);
+                if ($result > 0) {
+                    $this->wpdb->query("UPDATE $metaTableName SET registered = registered + 1 WHERE id = {$this->post['post_ID']};");
+                }            
             }
         }
     }
