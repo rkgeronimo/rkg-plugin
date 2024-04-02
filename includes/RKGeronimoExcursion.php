@@ -268,11 +268,13 @@ class RKGeronimoExcursion
             // When creating new excursion, add organizer
             if ($result) {
                 $tableName   = $this->wpdb->prefix."rkg_excursion_signup";
+                // set author, in case admin has put organizer as someone else
+                $author = isset($this->post['post_author_override']) ? $this->post['post_author_override'] : $this->post['post_author'];
                 $sql = $this->wpdb->prepare(
-                    "INSERT IGNORE INTO $tableName (post_id, user_id) ".
+                    "INSERT INTO $tableName (post_id, user_id) ".
                     "VALUES (%s, %s) ",
                     $this->post['post_ID'],
-                    $this->post['post_author_override'] // safer to use in case admin has put organizer as someone else
+                    $author
                 );
                 $result = $this->wpdb->query($sql);
                 if ($result > 0) {
