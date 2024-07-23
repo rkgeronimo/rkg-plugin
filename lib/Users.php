@@ -130,11 +130,7 @@ class Users implements InitInterface
             "mask",
             true
         );
-        $context['profileMeta']['snorkel']     = get_user_meta(
-            $user->ID,
-            "snorkel",
-            true
-        );
+
         $context['profileMeta']['regulator']   = get_user_meta(
             $user->ID,
             "regulator",
