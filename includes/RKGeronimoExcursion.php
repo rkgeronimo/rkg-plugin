@@ -283,55 +283,80 @@ class RKGeronimoExcursion
             }
 
             // Add predprijave
-
             $tableName = $this->wpdb->prefix."rkg_excursion_signup";
+
             if ($this->post['pr1']) {
-                $sql = $this->wpdb->prepare(
-                    "INSERT INTO $tableName (user_id, post_id) ".
-                    "VALUES (%s, %s) ",
-                    $this->post['pr1'],
-                    $this->post['post_ID']
-                );
-                $result = $this->wpdb->query($sql);
-                if ($result > 0) {
-                    $this->wpdb->query("UPDATE $metaTableName SET registered = registered + 1 WHERE id = {$this->post['post_ID']};");
+                $userId = $this->post['pr1'];
+                $postId = $this->post['post_ID'];
+
+                // Check if user can be moved from waiting to registered
+                if ($this->moveUserFromWaitingToRegistered($userId, $postId)) {
+                    $sql = $this->wpdb->prepare(
+                        "INSERT IGNORE INTO $tableName (user_id, post_id) ".
+                        "VALUES (%s, %s) ",
+                        $userId,
+                        $postId
+                    );
+                    $result = $this->wpdb->query($sql);
+
+                    if ($result > 0) {
+                        $this->wpdb->query("UPDATE $metaTableName SET registered = registered + 1 WHERE id = {$postId};");
+                    }
                 }
             }
             if ($this->post['pr2']) {
-                $sql = $this->wpdb->prepare(
-                    "INSERT INTO $tableName (user_id, post_id) ".
-                    "VALUES (%s, %s) ",
-                    $this->post['pr2'],
-                    $this->post['post_ID']
-                );
-                $result = $this->wpdb->query($sql);
-                if ($result > 0) {
-                    $this->wpdb->query("UPDATE $metaTableName SET registered = registered + 1 WHERE id = {$this->post['post_ID']};");
-                }            
+                $userId = $this->post['pr2'];
+                $postId = $this->post['post_ID'];
+
+                if ($this->moveUserFromWaitingToRegistered($userId, $postId)) {
+                    $sql = $this->wpdb->prepare(
+                        "INSERT IGNORE INTO $tableName (user_id, post_id) ".
+                        "VALUES (%s, %s) ",
+                        $userId,
+                        $postId
+                    );
+                    $result = $this->wpdb->query($sql);
+
+                    if ($result > 0) {
+                        $this->wpdb->query("UPDATE $metaTableName SET registered = registered + 1 WHERE id = {$postId};");
+                    }
+                }
             }
             if ($this->post['pr3']) {
-                $sql = $this->wpdb->prepare(
-                    "INSERT INTO $tableName (user_id, post_id) ".
-                    "VALUES (%s, %s) ",
-                    $this->post['pr3'],
-                    $this->post['post_ID']
-                );
-                $result = $this->wpdb->query($sql);
-                if ($result > 0) {
-                    $this->wpdb->query("UPDATE $metaTableName SET registered = registered + 1 WHERE id = {$this->post['post_ID']};");
-                }            
+                $userId = $this->post['pr3'];
+                $postId = $this->post['post_ID'];
+
+                if ($this->moveUserFromWaitingToRegistered($userId, $postId)) {
+                    $sql = $this->wpdb->prepare(
+                        "INSERT IGNORE INTO $tableName (user_id, post_id) ".
+                        "VALUES (%s, %s) ",
+                        $userId,
+                        $postId
+                    );
+                    $result = $this->wpdb->query($sql);
+
+                    if ($result > 0) {
+                        $this->wpdb->query("UPDATE $metaTableName SET registered = registered + 1 WHERE id = {$postId};");
+                    }
+                }
             }
             if ($this->post['pr4']) {
-                $sql = $this->wpdb->prepare(
-                    "INSERT INTO $tableName (user_id, post_id) ".
-                    "VALUES (%s, %s) ",
-                    $this->post['pr4'],
-                    $this->post['post_ID']
-                );
-                $result = $this->wpdb->query($sql);
-                if ($result > 0) {
-                    $this->wpdb->query("UPDATE $metaTableName SET registered = registered + 1 WHERE id = {$this->post['post_ID']};");
-                }            
+                $userId = $this->post['pr4'];
+                $postId = $this->post['post_ID'];
+
+                if ($this->moveUserFromWaitingToRegistered($userId, $postId)) {
+                    $sql = $this->wpdb->prepare(
+                        "INSERT IGNORE INTO $tableName (user_id, post_id) ".
+                        "VALUES (%s, %s) ",
+                        $userId,
+                        $postId
+                    );
+                    $result = $this->wpdb->query($sql);
+
+                    if ($result > 0) {
+                        $this->wpdb->query("UPDATE $metaTableName SET registered = registered + 1 WHERE id = {$postId};");
+                    }
+                }
             }
         }
     }
@@ -663,4 +688,48 @@ class RKGeronimoExcursion
         }
         return false;
     }
+
+    /**
+     * Remove user from waiting list and add to registered list
+     *
+     * @param int $userId
+     * @param int $postId
+     * @return bool
+     */
+    private function moveUserFromWaitingToRegistered($userId, $postId)
+    {
+        $waitingTableName = $this->wpdb->prefix . "rkg_excursion_waiting";
+        $signupTableName = $this->wpdb->prefix . "rkg_excursion_signup";
+        $metaTableName = $this->wpdb->prefix . "rkg_excursion_meta";
+        
+        // Check if user is already registered in signup table
+        $existingSignup = $this->wpdb->get_var($this->wpdb->prepare(
+            "SELECT COUNT(*) FROM $signupTableName WHERE user_id = %d AND post_id = %d",
+            $userId,
+            $postId
+        ));
+        
+        // If user is already registered, don't process
+        if ($existingSignup > 0) {
+            return false;
+        }
+        
+        // Delete from waiting list if user is there
+        $waiting = $this->wpdb->delete(
+            $waitingTableName,
+            array(
+                'user_id' => $userId,
+                'post_id' => $postId
+            ),
+            array('%d', '%d')
+        );
+        
+        // Update waiting counter if user was on waiting list
+        if ($waiting) {
+            $this->wpdb->query("UPDATE $metaTableName SET waiting = waiting - 1 WHERE id = {$postId};");
+        }
+        
+        return true;
+    }
+
 }
